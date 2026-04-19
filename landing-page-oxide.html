@@ -1,0 +1,2028 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="W工作室 — 为企业交付可落地的 AI 产品。4-8 周从策略到部署，全栈交付。">
+<meta name="theme-color" content="#050505">
+
+<!-- Open Graph -->
+<meta property="og:title" content="W工作室 · 为企业交付可落地的 AI 产品">
+<meta property="og:description" content="4-8 周从 AI 策略到生产部署。Agent 编排、知识引擎、内容工厂、运营 Copilot。">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://wstudio.work">
+<meta property="og:image" content="https://wstudio.work/og-image.png">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="W工作室 · 为企业交付可落地的 AI 产品">
+<meta name="twitter:description" content="4-8 周从 AI 策略到生产部署。">
+
+<title>W工作室 · 为企业交付可落地的 AI 产品</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --bg:        #FFFFFF;
+    --bg-dark:   #050505;
+    --text:      #000000;
+    --text-dark: #F5F5F5;
+    --muted:     #757575;
+    --border:    #000000;
+    --border-dark: #F5F5F5;
+    --accent:    #00FF66;
+    --alert:     #FF3B00;
+
+    --r: 0;
+    --hair: 1px;
+
+    --sp-1: 8px;
+    --sp-2: 16px;
+    --sp-3: 24px;
+    --sp-4: 32px;
+    --sp-5: 48px;
+    --sp-6: 64px;
+    --sp-7: 96px;
+    --sp-8: 128px;
+
+    --font-mono: 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, monospace;
+
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  [data-theme="light"] {
+    --c-bg: var(--bg);
+    --c-text: var(--text);
+    --c-border: var(--border);
+    --c-muted: var(--muted);
+    --c-inverse-bg: var(--bg-dark);
+    --c-inverse-text: var(--text-dark);
+  }
+  [data-theme="dark"] {
+    --c-bg: var(--bg-dark);
+    --c-text: var(--text-dark);
+    --c-border: var(--border-dark);
+    --c-muted: var(--muted);
+    --c-inverse-bg: var(--bg);
+    --c-inverse-text: var(--text);
+  }
+
+  * { box-sizing: border-box; }
+  *::selection { background: var(--accent); color: #000; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--c-bg);
+    color: var(--c-text);
+    font-family: var(--font-mono);
+    font-size: 14px;
+    line-height: 1.5;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    transition: background 200ms linear, color 200ms linear;
+    scroll-behavior: smooth;
+  }
+
+  a { color: inherit; text-decoration: none; }
+  button { font-family: inherit; }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--sp-4);
+  }
+
+  .label {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--c-text);
+  }
+  .label-muted {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--c-muted);
+  }
+
+  .hr-thick {
+    border: 0;
+    border-top: var(--hair) solid var(--c-border);
+    margin: 0;
+  }
+  .hr-accent {
+    border: 0;
+    border-top: var(--hair) solid var(--accent);
+    margin: 0;
+  }
+
+  /* ── NAV ── */
+  .lp-nav {
+    border-bottom: var(--hair) solid var(--c-border);
+    background: var(--c-bg);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    transition: backdrop-filter 200ms linear, background 200ms linear, box-shadow 200ms linear;
+  }
+  .lp-nav.scrolled {
+    backdrop-filter: blur(12px) saturate(1.2);
+    background: rgba(var(--c-bg-rgb, 5,5,5), 0.85);
+    box-shadow: 0 1px 0 rgba(0,255,102,0.15);
+  }
+  [data-theme="light"] .lp-nav.scrolled {
+    background: rgba(255,255,255,0.85);
+    box-shadow: 0 1px 0 rgba(0,0,0,0.08);
+  }
+  .lp-nav .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+  }
+  .lp-nav-left {
+    display: flex;
+    align-items: baseline;
+    gap: var(--sp-2);
+  }
+  .lp-wordmark {
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+  .lp-version {
+    font-size: 11px;
+    color: var(--c-muted);
+    font-weight: 500;
+  }
+  .lp-nav-right {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-4);
+  }
+  .lp-nav-right a {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--c-text);
+    letter-spacing: 0.02em;
+    position: relative;
+    padding: 4px 0;
+  }
+  .lp-nav-right a::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background: var(--accent);
+    transition: width 0.3s ease;
+  }
+  .lp-nav-right a:hover { color: var(--c-muted); }
+  .lp-nav-right a:hover::after { width: 100%; }
+
+  /* ── NAV DROPDOWN ── */
+  .nav-dropdown { position: relative; }
+  .nav-dropdown-toggle {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--c-text);
+    letter-spacing: 0.02em;
+    position: relative;
+    padding: 4px 0;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: none;
+    border: none;
+    font-family: var(--font-mono);
+  }
+  .nav-dropdown-toggle::after {
+    content: '▼';
+    font-size: 8px;
+    opacity: 0.6;
+  }
+  .nav-dropdown-menu {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    background: var(--c-bg);
+    border: var(--hair) solid var(--c-border);
+    min-width: 170px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-4px);
+    transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+    z-index: 100;
+  }
+  .nav-dropdown:hover .nav-dropdown-menu,
+  .nav-dropdown.open .nav-dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+  .nav-dropdown-menu a {
+    display: block;
+    padding: 10px 16px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    border-bottom: var(--hair) solid var(--c-border);
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+  .nav-dropdown-menu a:last-child { border-bottom: 0; }
+  .nav-dropdown-menu a:hover {
+    background: var(--accent);
+    color: #000;
+  }
+
+  /* ── LANG SWITCH ── */
+  .lang-switch {
+    margin-left: 16px;
+    display: flex;
+    gap: 4px;
+  }
+  .lang-btn {
+    padding: 4px 8px;
+    border: 1px solid var(--c-border);
+    background: transparent;
+    color: var(--c-muted);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .lang-btn:hover { color: var(--c-text); }
+  .lang-btn.active {
+    background: var(--accent);
+    color: #000;
+    border-color: var(--accent);
+  }
+
+  /* ── HERO ── */
+  .lp-hero {
+    position: relative;
+    border-bottom: var(--hair) solid var(--c-border);
+    padding: var(--sp-7) 0 var(--sp-7);
+    overflow: hidden;
+  }
+  .grid-overlay {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--sp-4);
+    left: 0;
+    right: 0;
+  }
+  .grid-overlay span {
+    border-left: var(--hair) solid var(--c-border);
+    opacity: 0.08;
+    animation: pulse 4s ease-in-out infinite;
+  }
+  .grid-overlay span:last-child {
+    border-right: var(--hair) solid var(--c-border);
+  }
+  .grid-overlay span:nth-child(2n) { animation-delay: 0.5s; }
+  .grid-overlay span:nth-child(3n) { animation-delay: 1s; }
+  .grid-overlay span:nth-child(4n) { animation-delay: 1.5s; }
+
+  .hero-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-2);
+    margin-bottom: var(--sp-4);
+  }
+  .hero-eyebrow .dot {
+    width: 8px;
+    height: 8px;
+    background: var(--accent);
+    display: inline-block;
+    animation: accentPulse 2s ease-in-out infinite;
+  }
+  .hero-eyebrow .label {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+  }
+
+  .hero-title {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: clamp(48px, 9vw, 128px);
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    margin: 0 0 var(--sp-5) 0;
+    opacity: 1;
+    min-height: 1.05em;
+  }
+  .hero-title::after {
+    content: '';
+    display: inline-block;
+    width: 3px;
+    height: 0.85em;
+    background: var(--accent);
+    margin-left: 4px;
+    vertical-align: baseline;
+  }
+  .hero-title.typing-done::after {
+    animation: cursorBlink 0.75s step-end infinite;
+  }
+  @media (max-width: 880px) {
+    .hero-title {
+      font-size: clamp(40px, 12vw, 80px);
+    }
+  }
+
+  .hero-sub {
+    font-size: 16px;
+    line-height: 1.55;
+    color: var(--c-text);
+    max-width: 64ch;
+    margin: 0 0 var(--sp-5) 0;
+  }
+  .hero-sub .muted { color: var(--c-muted); }
+
+  .hero-cta-row {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-4);
+    flex-wrap: wrap;
+  }
+  .cta-shell {
+    display: inline-flex;
+    align-items: stretch;
+    border: var(--hair) solid var(--c-border);
+    background: var(--c-bg);
+    height: 48px;
+    min-width: 280px;
+    transition: box-shadow 0.3s ease;
+  }
+  .cta-shell:hover {
+    box-shadow: 0 0 20px rgba(0, 255, 102, 0.2);
+  }
+  .cta-shell .prompt {
+    display: flex;
+    align-items: center;
+    padding: 0 var(--sp-3);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--c-text);
+    letter-spacing: 0;
+  }
+  .cta-shell .prompt .pf { color: var(--accent); margin-right: 6px; }
+  .cta-shell .action {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 var(--sp-3);
+    background: var(--accent);
+    color: #000;
+    border: 0;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease;
+  }
+  .cta-shell .action:hover {
+    background: var(--c-text);
+    color: var(--c-bg);
+  }
+  a.ghost-link {
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    color: var(--c-text);
+    border-bottom: var(--hair) solid var(--c-border);
+    padding-bottom: 2px;
+    transition: color 0.2s ease, border-color 0.2s ease;
+  }
+  a.ghost-link:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+
+  .hero-meta {
+    margin-top: var(--sp-7);
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--sp-4);
+    border-top: var(--hair) solid var(--c-border);
+    padding-top: var(--sp-3);
+  }
+  .hero-meta .item .label-muted { display: block; margin-bottom: 4px; }
+  .hero-meta .item .val { font-size: 13px; font-weight: 500; }
+
+  /* ── PRODUCT GRID ── */
+  .lp-products {
+    border-bottom: var(--hair) solid var(--c-border);
+    padding: var(--sp-7) 0;
+  }
+  .lp-products .section-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: var(--sp-5);
+    padding-bottom: var(--sp-3);
+    border-bottom: var(--hair) solid var(--c-border);
+  }
+  .lp-products .section-head h2 {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin: 0;
+  }
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0;
+    border: var(--hair) solid var(--c-border);
+  }
+  .product-card {
+    padding: var(--sp-5);
+    border-right: var(--hair) solid var(--c-border);
+    border-bottom: var(--hair) solid var(--c-border);
+    transition: transform 0.3s ease, border-color 0.3s ease;
+  }
+  .product-card:nth-child(2n) { border-right: 0; }
+  .product-card:nth-last-child(-n+2) { border-bottom: 0; }
+  .product-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-4px);
+  }
+  .product-card:hover .tag {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+  .product-card .card-label {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--c-muted);
+    margin-bottom: var(--sp-2);
+  }
+  .product-card h3 {
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    margin: 0 0 var(--sp-2) 0;
+  }
+  .product-card p {
+    font-size: 13px;
+    color: var(--c-muted);
+    line-height: 1.6;
+    margin: 0 0 var(--sp-3) 0;
+  }
+  .product-card .tag {
+    display: inline-block;
+    padding: 4px 8px;
+    border: var(--hair) solid var(--c-border);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--c-muted);
+    transition: border-color 0.3s ease, color 0.3s ease;
+  }
+
+  /* ── CODE MANIFESTO ── */
+  .lp-code {
+    border-bottom: var(--hair) solid var(--c-border);
+    padding: var(--sp-7) 0;
+  }
+  .lp-code .container {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: var(--sp-5);
+  }
+  .lp-code .col-label h2 {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin: 0 0 var(--sp-2) 0;
+  }
+  .lp-code .col-label p {
+    font-size: 13px;
+    color: var(--c-muted);
+    margin: 0;
+    max-width: 30ch;
+    line-height: 1.6;
+  }
+  .code-block {
+    border: var(--hair) solid var(--c-border);
+    background: var(--c-bg);
+    font-family: var(--font-mono);
+    font-size: 13px;
+    line-height: 1.7;
+  }
+  .code-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: var(--hair) solid var(--c-border);
+    padding: var(--sp-1) var(--sp-3);
+    font-size: 11px;
+    color: var(--c-muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .code-body {
+    padding: var(--sp-3);
+    overflow-x: auto;
+  }
+  .code-body pre {
+    margin: 0;
+    font-family: inherit;
+    font-size: 13px;
+    line-height: 1.7;
+    color: var(--c-text);
+    white-space: pre;
+  }
+  .c-com { color: var(--c-muted); }
+  .c-key { color: var(--c-text); font-weight: 700; }
+  .c-acc { color: var(--accent); font-weight: 700; }
+
+  /* ── STEPS ── */
+  .lp-steps {
+    border-bottom: var(--hair) solid var(--c-border);
+    padding: var(--sp-7) 0;
+  }
+  .lp-steps .section-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: var(--sp-5);
+    padding-bottom: var(--sp-3);
+    border-bottom: var(--hair) solid var(--c-border);
+  }
+  .lp-steps .section-head h2 {
+    font-size: 24px;
+    font-weight: 700;
+    margin: 0;
+    letter-spacing: -0.01em;
+  }
+  .lp-steps .section-head .label-muted { font-size: 11px; }
+  .steps-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    border-top: var(--hair) solid var(--c-border);
+  }
+  .step {
+    border-right: var(--hair) solid var(--c-border);
+    padding: var(--sp-4) var(--sp-3) var(--sp-5);
+    transition: background 0.3s ease;
+    display: flex;
+    flex-direction: column;
+  }
+  .step .hint {
+    margin-top: auto;
+  }
+  .step:last-child { border-right: 0; }
+  .step:hover { background: rgba(0, 255, 102, 0.03); }
+  .step:hover .num { color: var(--accent); }
+  .step .num {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--c-muted);
+    letter-spacing: 0.08em;
+    margin-bottom: var(--sp-4);
+    transition: color 0.3s ease;
+  }
+  .step h3 {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin: 0 0 var(--sp-3) 0;
+  }
+  .step p {
+    font-size: 13px;
+    line-height: 1.65;
+    color: var(--c-text);
+    margin: 0 0 var(--sp-3) 0;
+  }
+  .step .hint {
+    font-size: 11px;
+    color: var(--c-muted);
+    letter-spacing: 0.04em;
+    border-top: var(--hair) solid var(--c-border);
+    padding-top: var(--sp-2);
+  }
+  .step .hint .tag {
+    color: var(--c-text);
+    font-weight: 500;
+  }
+
+  /* ── MANIFESTO ── */
+  .lp-manifesto {
+    border-top: var(--hair) solid var(--accent);
+    border-bottom: var(--hair) solid var(--accent);
+    padding: var(--sp-8) 0;
+    text-align: left;
+  }
+  .lp-manifesto .container {
+    max-width: 980px;
+  }
+  .lp-manifesto .label-muted {
+    margin-bottom: var(--sp-5);
+    display: block;
+  }
+  .lp-manifesto ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    counter-reset: roman;
+  }
+  .lp-manifesto li {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: var(--sp-3);
+    align-items: baseline;
+    padding: var(--sp-3) 0;
+    border-bottom: var(--hair) dashed var(--c-muted);
+    opacity: 0;
+    transform: translateX(-20px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  .lp-manifesto.visible li {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  .lp-manifesto.visible li:nth-child(1) { transition-delay: 0.1s; }
+  .lp-manifesto.visible li:nth-child(2) { transition-delay: 0.2s; }
+  .lp-manifesto.visible li:nth-child(3) { transition-delay: 0.3s; }
+  .lp-manifesto.visible li:nth-child(4) { transition-delay: 0.4s; }
+  .lp-manifesto li:last-child { border-bottom: 0; }
+  .lp-manifesto .roman {
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    color: var(--c-muted);
+  }
+  .lp-manifesto .line {
+    font-size: clamp(28px, 4.4vw, 52px);
+    line-height: 1.05;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--c-text);
+  }
+
+  /* ── STATS ── */
+  .lp-stats {
+    border-bottom: var(--hair) solid var(--c-border);
+    padding: var(--sp-6) 0;
+  }
+  .lp-stats .container {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: var(--sp-3);
+  }
+  .stat {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .stat .num {
+    font-size: clamp(36px, 5vw, 64px);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .stat.visible .num {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .stat .lbl {
+    font-size: 11px;
+    color: var(--c-muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .lp-stats .pipe {
+    font-size: clamp(36px, 5vw, 64px);
+    font-weight: 400;
+    color: var(--c-muted);
+    line-height: 1;
+    align-self: center;
+  }
+
+  /* ── PRICING ── */
+  .lp-pricing {
+    border-bottom: var(--hair) solid var(--c-border);
+    padding: var(--sp-7) 0;
+  }
+  .lp-pricing .section-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: var(--sp-5);
+    padding-bottom: var(--sp-3);
+    border-bottom: var(--hair) solid var(--c-border);
+  }
+  .lp-pricing .section-head h2 {
+    font-size: 24px;
+    font-weight: 700;
+    margin: 0;
+    letter-spacing: -0.01em;
+  }
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    border: var(--hair) solid var(--c-border);
+  }
+  .tier {
+    padding: var(--sp-5);
+    border-right: var(--hair) solid var(--c-border);
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease, border-color 0.3s ease;
+  }
+  .tier:last-child { border-right: 0; }
+  .tier:hover { transform: translateY(-2px); }
+  .tier:not(.featured):hover { border-color: var(--accent); }
+  .tier .tier-key {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--c-muted);
+    margin-bottom: var(--sp-2);
+  }
+  .tier .tier-name {
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    margin-bottom: var(--sp-3);
+  }
+  .tier .price {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    margin-bottom: var(--sp-2);
+    padding-bottom: var(--sp-3);
+    border-bottom: var(--hair) solid var(--c-border);
+  }
+  .tier .price .amount {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--c-text);
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+  .tier .price .per {
+    font-size: 12px;
+    color: var(--c-muted);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .tier .blurb {
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--c-muted);
+    margin: var(--sp-3) 0 var(--sp-4) 0;
+    min-height: 72px;
+  }
+  .tier ul {
+    list-style: none;
+    margin: 0 0 var(--sp-4) 0;
+    padding: 0;
+  }
+  .tier li {
+    display: grid;
+    grid-template-columns: 16px 1fr;
+    gap: var(--sp-2);
+    align-items: baseline;
+    font-size: 12px;
+    color: var(--c-text);
+    padding: 6px 0;
+    border-bottom: var(--hair) solid var(--c-border);
+  }
+  .tier li:last-child { border-bottom: 0; }
+  .tier li .mk {
+    color: var(--accent);
+    font-size: 11px;
+  }
+  .tier .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+    padding: 0 var(--sp-3);
+    border: var(--hair) solid var(--c-border);
+    background: transparent;
+    color: var(--c-text);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+    margin-top: auto;
+    text-decoration: none;
+    transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  }
+  .tier .btn:hover {
+    background: var(--accent);
+    color: #000;
+    border-color: var(--accent);
+  }
+  .tier.featured {
+    background: var(--accent);
+    color: #000;
+  }
+  .tier.featured .tier-key { color: #000; opacity: 0.6; }
+  .tier.featured .tier-name { color: #000; }
+  .tier.featured .price { border-bottom-color: #000; }
+  .tier.featured .price .amount { color: #000; }
+  .tier.featured .price .per { color: #000; opacity: 0.6; }
+  .tier.featured .blurb { color: #000; opacity: 0.7; }
+  .tier.featured li { color: #000; border-bottom-color: rgba(0,0,0,0.15); }
+  .tier.featured li .mk { color: #000; }
+  .tier.featured .btn {
+    background: #000;
+    color: var(--accent);
+    border-color: #000;
+  }
+  .tier.featured .btn:hover {
+    background: #fff;
+    color: #000;
+    border-color: #fff;
+  }
+
+  /* ── CTA ── */
+  .lp-cta {
+    border-bottom: var(--hair) solid var(--c-border);
+    padding: var(--sp-8) 0;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .lp-cta .container { position: relative; z-index: 2; }
+  .lp-cta h2 {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: clamp(48px, 8vw, 120px);
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    margin: 0 0 var(--sp-4) 0;
+  }
+  .lp-cta p {
+    font-size: 16px;
+    color: var(--c-muted);
+    max-width: 56ch;
+    margin: 0 auto var(--sp-5) auto;
+    line-height: 1.5;
+  }
+  .lp-cta .row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: var(--sp-3);
+    flex-wrap: wrap;
+  }
+
+  /* ── FOOTER ── */
+  .lp-footer {
+    padding: var(--sp-6) 0 var(--sp-5);
+  }
+  .lp-footer .container {
+    display: grid;
+    gap: var(--sp-5);
+  }
+  .lp-footer .row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: var(--sp-3);
+  }
+  .lp-footer .brand {
+    font-size: 16px;
+    font-weight: 700;
+  }
+  .lp-footer nav {
+    display: flex;
+    gap: var(--sp-4);
+  }
+  .lp-footer nav a {
+    font-size: 12px;
+    font-weight: 500;
+    position: relative;
+    padding: 4px 0;
+  }
+  .lp-footer nav a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background: var(--accent);
+    transition: width 0.3s ease;
+  }
+  .lp-footer nav a:hover::after { width: 100%; }
+  .lp-footer .prompt-line {
+    font-size: 12px;
+    color: var(--c-muted);
+    cursor: pointer;
+    user-select: all;
+  }
+  .lp-footer .prompt-line .pf { color: var(--accent); }
+  .lp-footer .prompt-line .blink {
+    display: inline-block;
+    width: 8px;
+    height: 14px;
+    background: var(--c-text);
+    margin-left: 4px;
+    vertical-align: -2px;
+    animation: blink 1s steps(2) infinite;
+  }
+
+  /* ── TOAST ── */
+  .toast {
+    position: fixed;
+    bottom: 80px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    padding: 10px 20px;
+    background: var(--c-text);
+    color: var(--c-bg);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    border: var(--hair) solid var(--c-border);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    z-index: 2000;
+  }
+  .toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 0.08; }
+    50%      { opacity: 0.15; }
+  }
+  @keyframes scanline {
+    0%   { transform: translateY(-100%); }
+    100% { transform: translateY(100vh); }
+  }
+  @keyframes typing {
+    from { width: 0; }
+    to   { width: 100%; }
+  }
+  @keyframes blink-caret {
+    50% { border-color: transparent; }
+  }
+  @keyframes cursorBlink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+  @keyframes glitch {
+    0%, 90%, 100% { transform: translate(0); }
+    92% { transform: translate(-2px, 1px); }
+    94% { transform: translate(2px, -1px); }
+    96% { transform: translate(-1px, -1px); }
+    98% { transform: translate(1px, 1px); }
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-6px); }
+  }
+  @keyframes countUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes accentPulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(0, 255, 102, 0); }
+    50%      { box-shadow: 0 0 20px 2px rgba(0, 255, 102, 0.3); }
+  }
+  @keyframes blink {
+    50% { opacity: 0; }
+  }
+
+  /* Scroll reveal */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s var(--ease-out), transform 0.6s var(--ease-out);
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+
+  /* Logo glitch */
+  .lp-wordmark:hover {
+    animation: glitch 0.3s ease;
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-track { background: var(--c-bg); }
+  ::-webkit-scrollbar-thumb { background: var(--c-border); }
+  ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+  /* ── THEME TOGGLE ── */
+  .theme-bar {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 0;
+    padding: 0;
+    background: var(--c-bg);
+    border: var(--hair) solid var(--c-border);
+    z-index: 1000;
+  }
+  .theme-bar button {
+    padding: 8px 16px;
+    border: 0;
+    background: transparent;
+    color: var(--c-muted);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease;
+  }
+  .theme-bar button + button {
+    border-left: var(--hair) solid var(--c-border);
+  }
+  .theme-bar button.active {
+    background: var(--accent);
+    color: #000;
+  }
+
+  /* ── MOBILE ── */
+  @media (max-width: 880px) {
+    .lp-nav-right { gap: var(--sp-2); }
+    .lp-nav-right > a:nth-child(2),
+    .lp-nav-right > a:nth-child(3) { display: none; }
+    .cta-shell { min-width: 0; width: 100%; }
+    .hero-meta { grid-template-columns: repeat(2, 1fr); }
+    .lp-code .container { grid-template-columns: 1fr; gap: var(--sp-4); }
+    .steps-grid { grid-template-columns: 1fr; }
+    .step { border-right: 0; border-bottom: var(--hair) solid var(--c-border); }
+    .step:last-child { border-bottom: 0; }
+    .lp-manifesto li { grid-template-columns: 48px 1fr; }
+    .lp-manifesto .line { font-size: clamp(22px, 7vw, 36px); }
+    .lp-stats .container { gap: var(--sp-2); }
+    .lp-stats .pipe { display: none; }
+    .stat { width: 47%; padding: var(--sp-2) 0; border-top: var(--hair) solid var(--c-border); }
+    .product-grid { grid-template-columns: 1fr; }
+    .product-card { border-right: 0; }
+    .pricing-grid { grid-template-columns: 1fr; }
+    .tier { border-right: 0; border-bottom: var(--hair) solid var(--c-border); }
+    .tier:last-child { border-bottom: 0; }
+    .lp-footer .row { flex-direction: column; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav class="lp-nav" id="navbar" role="navigation" aria-label="主导航">
+  <div class="container">
+    <div class="lp-nav-left">
+      <a href="#" class="lp-wordmark" aria-label="W工作室首页" data-i18n="brand">W工作室</a>
+      <span class="lp-version">[1.0.0]</span>
+    </div>
+    <div class="lp-nav-right">
+      <div class="nav-dropdown">
+        <button class="nav-dropdown-toggle" data-i18n="nav.product">产品</button>
+        <div class="nav-dropdown-menu">
+          <a href="#product" data-i18n="nav.aiProducts">AI 产品</a>
+          <a href="smart-business-district.html" data-i18n="nav.bizMember">商业会员系统</a>
+        </div>
+      </div>
+      <a href="#how" data-i18n="nav.how">流程</a>
+      <a href="#pricing" data-i18n="nav.pricing">定价</a>
+      <a href="#cta" data-i18n="nav.contact">联系</a>
+    </div>
+    <div class="lang-switch" role="group" aria-label="语言切换">
+      <button class="lang-btn active" data-lang="zh" aria-label="中文">中</button>
+      <button class="lang-btn" data-lang="en" aria-label="English">EN</button>
+      <button class="lang-btn" data-lang="vi" aria-label="Tiếng Việt">VI</button>
+    </div>
+  </div>
+</nav>
+
+<main>
+
+<!-- ── HERO ── -->
+<section class="lp-hero" aria-label="首屏">
+  <div class="grid-overlay" aria-hidden="true">
+    <span></span><span></span><span></span><span></span>
+    <span></span><span></span><span></span><span></span>
+    <span></span><span></span><span></span><span></span>
+  </div>
+  <div class="container">
+    <div class="hero-eyebrow">
+      <span class="dot" aria-hidden="true"></span>
+      <span class="label" data-i18n="hero.eyebrow">[v1.0 · 可交付]</span>
+    </div>
+    <h1 class="hero-title" data-i18n="hero.title">AI 想法，变成现实</h1>
+    <p class="hero-sub" data-i18n="hero.sub">
+      W工作室提供从 AI 策略、skill 定制到系统集成与部署的全栈能力。
+      <span class="muted">4-8 周内交付落地可用产品，不是承诺，是流程。</span>
+    </p>
+    <div class="hero-cta-row">
+      <a href="#cta" class="cta-shell" role="button" aria-label="预约咨询">
+        <span class="prompt"><span class="pf">$</span> <span data-i18n="hero.cta">预约咨询</span></span>
+        <span class="action" aria-hidden="true">→</span>
+      </a>
+      <a href="#product" class="ghost-link" data-i18n="hero.viewProducts">查看产品矩阵 →</a>
+    </div>
+
+    <div class="hero-meta">
+      <div class="item">
+        <span class="label-muted" data-i18n="hero.deliveryCycle">交付周期</span>
+        <div class="val" data-i18n="hero.deliveryCycleValue">4-8 周</div>
+      </div>
+      <div class="item">
+        <span class="label-muted" data-i18n="hero.skillRate">技能复用率</span>
+        <div class="val">70%+</div>
+      </div>
+      <div class="item">
+        <span class="label-muted" data-i18n="hero.deploy">部署方式</span>
+        <div class="val" data-i18n="hero.deployValue">云端 / 私有化</div>
+      </div>
+      <div class="item">
+        <span class="label-muted" data-i18n="hero.sla">支持覆盖</span>
+        <div class="val">7×24 SLA</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PRODUCT GRID ── -->
+<section class="lp-products reveal" id="product" aria-labelledby="product-heading">
+  <div class="container">
+    <div class="section-head">
+      <h2 id="product-heading" data-i18n="product.heading">[ 产品矩阵 ]</h2>
+      <span class="label-muted" data-i18n="product.subtitle">AI 产品栈 · 可复用模块</span>
+    </div>
+    <div class="product-grid">
+      <article class="product-card">
+        <div class="card-label">01 / Agent</div>
+        <h3 data-i18n="product.agent.title">Agent 编排平台</h3>
+        <p data-i18n="product.agent.desc">多智能体协作、权限与审批内建。快速构建企业级 Agent 应用。</p>
+        <span class="tag" data-i18n="product.tag.deployed">可部署</span>
+      </article>
+      <article class="product-card">
+        <div class="card-label">02 / Knowledge</div>
+        <h3 data-i18n="product.knowledge.title">知识与数据引擎</h3>
+        <p data-i18n="product.knowledge.desc">RAG、QMD 等主流 AI 知识库管理。释放私域知识价值。</p>
+        <span class="tag" data-i18n="product.tag.deployed">可部署</span>
+      </article>
+      <article class="product-card">
+        <div class="card-label">03 / Content</div>
+        <h3 data-i18n="product.content.title">多模态内容工厂</h3>
+        <p data-i18n="product.content.desc">文本、图像、视频生成与品牌校准。自动化内容生产流水线。</p>
+        <span class="tag" data-i18n="product.tag.deployed">可部署</span>
+      </article>
+      <article class="product-card">
+        <div class="card-label">04 / Ops</div>
+        <h3 data-i18n="product.ops.title">运营 Copilot</h3>
+        <p data-i18n="product.ops.desc">运营分析、指标监控与决策助手。数据驱动的智能运营中枢。</p>
+        <span class="tag" data-i18n="product.tag.dev">开发中</span>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ── CODE SECTION ── -->
+<section class="lp-code reveal" aria-labelledby="code-heading">
+  <div class="container">
+    <div class="col-label">
+      <h2 id="code-heading" data-i18n="code.heading">[ 技术架构 ]</h2>
+      <p data-i18n="code.desc">我们不是卖概念，是交付可运行的系统。从 PoC 到生产，一条流水线。</p>
+    </div>
+    <div class="code-block" role="region" aria-label="交付流水线代码">
+      <div class="code-head">
+        <span>W工作室 / delivery / pipeline.txt</span>
+        <span>v2.4 · stable</span>
+      </div>
+      <div class="code-body">
+<pre><span class="c-com">// [STEP 1] <span data-i18n="code.step1">发现与蓝图</span></span>
+<span class="c-key">sprint_1</span>   → <span data-i18n="code.sprint1Desc">目标梳理 + 数据边界 + 风险评估</span>
+
+<span class="c-com">// [STEP 2] <span data-i18n="code.step2">原型与验证</span></span>
+<span class="c-key">sprint_2</span>   → <span data-i18n="code.sprint2Desc">可交互原型 + 评估体系 + PoC 验证</span>
+
+<span class="c-com">// [STEP 3] <span data-i18n="code.step3">工程化上线</span></span>
+<span class="c-key">sprint_3</span>   → <span data-i18n="code.sprint3Desc">系统集成 + 部署上线 + 持续监控</span>
+
+<span class="c-com">// [RESULT] <span data-i18n="code.resultLabel">交付物</span></span>
+<span class="c-key">output</span>    := { code, docs, monitor, sla }
+<span class="c-acc">✓</span>         <span data-i18n="code.result">4-8 周，从想法到上线</span></pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── STEPS ── -->
+<section class="lp-steps reveal" id="how" aria-labelledby="steps-heading">
+  <div class="container">
+    <div class="section-head">
+      <h2 id="steps-heading" data-i18n="steps.title">[ 交付流程 ]</h2>
+      <span class="label-muted" data-i18n="steps.subtitle">三步上线 · 持续迭代</span>
+    </div>
+    <div class="steps-grid">
+      <article class="step">
+        <div class="num">[01]</div>
+        <h3 data-i18n="steps.step1.title">发现</h3>
+        <p data-i18n="steps.step1.desc">一周内梳理目标、数据与风险边界。明确交付物和验收标准。</p>
+        <div class="hint"><span data-i18n="steps.output">输出</span>: <span class="tag" data-i18n="steps.step1.tag">蓝图文档</span></div>
+      </article>
+      <article class="step">
+        <div class="num">[02]</div>
+        <h3 data-i18n="steps.step2.title">原型</h3>
+        <p data-i18n="steps.step2.desc">构建可交互原型与评估体系。小范围验证，降低失败成本。</p>
+        <div class="hint"><span data-i18n="steps.output">输出</span>: <span class="tag" data-i18n="steps.step2.tag">PoC 系统</span></div>
+      </article>
+      <article class="step">
+        <div class="num">[03]</div>
+        <h3 data-i18n="steps.step3.title">上线</h3>
+        <p data-i18n="steps.step3.desc">系统集成、部署上线与持续监控。7×24 SLA 支持。</p>
+        <div class="hint"><span data-i18n="steps.output">输出</span>: <span class="tag" data-i18n="steps.step3.tag">生产系统</span></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ── MANIFESTO ── -->
+<section class="lp-manifesto" id="manifesto" aria-labelledby="manifesto-heading">
+  <div class="container">
+    <span class="label-muted" id="manifesto-heading" data-i18n="manifesto.heading">[ 我们的原则 ]</span>
+    <ol>
+      <li>
+        <span class="roman">I.</span>
+        <span class="line" data-i18n="manifesto.1">交付不是承诺，是流程。</span>
+      </li>
+      <li>
+        <span class="roman">II.</span>
+        <span class="line" data-i18n="manifesto.2">AI 能力必须进入业务流程。</span>
+      </li>
+      <li>
+        <span class="roman">III.</span>
+        <span class="line" data-i18n="manifesto.3">可复用的模块，胜过定制开发。</span>
+      </li>
+      <li>
+        <span class="roman">IV.</span>
+        <span class="line" data-i18n="manifesto.4">安全合规，是底线不是卖点。</span>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<!-- ── STATS ── -->
+<section class="lp-stats reveal" aria-label="数据统计">
+  <div class="container">
+    <div class="stat" data-count="70" data-suffix="%+">
+      <div class="num">0%+</div>
+      <div class="lbl" data-i18n="stats.skillRate">技能复用率</div>
+    </div>
+    <span class="pipe" aria-hidden="true">|</span>
+    <div class="stat" data-count="8" data-suffix="" data-prefix="4-">
+      <div class="num" style="line-height: 1;">4-0</div>
+      <div class="lbl" style="text-align: center;" data-i18n="stats.delivery">周<br>平均交付周期</div>
+    </div>
+    <span class="pipe" aria-hidden="true">|</span>
+    <div class="stat" data-count="24" data-suffix="" data-prefix="7×">
+      <div class="num">7×0</div>
+      <div class="lbl" data-i18n="stats.sla">SLA 支持</div>
+    </div>
+    <span class="pipe" aria-hidden="true">|</span>
+    <div class="stat" data-count="100" data-suffix="%">
+      <div class="num">0%</div>
+      <div class="lbl" data-i18n="stats.codeDelivery">代码交付</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PRICING ── -->
+<section class="lp-pricing reveal" id="pricing" aria-labelledby="pricing-heading">
+  <div class="container">
+    <div class="section-head">
+      <h2 id="pricing-heading" data-i18n="pricing.title">[ 定价方案 ]</h2>
+      <span class="label-muted" data-i18n="pricing.subtitle">适配不同阶段 · 灵活扩展</span>
+    </div>
+    <div class="pricing-grid">
+      <article class="tier">
+        <div class="tier-key">S — Starter</div>
+        <div class="tier-name" data-i18n="pricing.starter.name">Starter</div>
+        <div class="price">
+          <span class="amount" data-i18n="pricing.starter.amount">智能体</span>
+          <span class="per" data-i18n="pricing.starter.per">部署计划</span>
+        </div>
+        <p class="blurb" data-i18n="pricing.starter.blurb">单一业务场景 PoC，核心 Agent 与组件库，交付智能体部署方案。</p>
+        <ul>
+          <li><span class="mk">+</span><span data-i18n="pricing.starter.f1">单一业务场景 PoC</span></li>
+          <li><span class="mk">+</span><span data-i18n="pricing.starter.f2">核心 Agent 与组件库</span></li>
+          <li><span class="mk">+</span><span data-i18n="pricing.starter.f3">交付智能体部署方案</span></li>
+        </ul>
+        <a href="#cta" class="btn" data-i18n="pricing.cta.plan">获取方案</a>
+      </article>
+      <article class="tier featured">
+        <div class="tier-key">IC — Growth</div>
+        <div class="tier-name" data-i18n="pricing.growth.name">Growth</div>
+        <div class="price">
+          <span class="amount" data-i18n="pricing.growth.amount">智能体</span>
+          <span class="per" data-i18n="pricing.growth.per">落地部署</span>
+        </div>
+        <p class="blurb" data-i18n="pricing.growth.blurb">专属交付小组，深度业务系统集成，评估与监控体系。</p>
+        <ul>
+          <li><span class="mk">+</span><span data-i18n="pricing.growth.f1">专属交付小组</span></li>
+          <li><span class="mk">+</span><span data-i18n="pricing.growth.f2">深度业务系统集成</span></li>
+          <li><span class="mk">+</span><span data-i18n="pricing.growth.f3">评估与监控体系</span></li>
+        </ul>
+        <a href="#cta" class="btn" data-i18n="pricing.cta.consult">预约咨询</a>
+      </article>
+      <article class="tier">
+        <div class="tier-key">ICE — Enterprise</div>
+        <div class="tier-name" data-i18n="pricing.enterprise.name">Enterprise</div>
+        <div class="price">
+          <span class="amount" data-i18n="pricing.enterprise.amount">企业级</span>
+          <span class="per" data-i18n="pricing.enterprise.per">专属方案</span>
+        </div>
+        <p class="blurb" data-i18n="pricing.enterprise.blurb">私有化与专属模型，安全合规审计，驻场与共创支持。</p>
+        <ul>
+          <li><span class="mk">+</span><span data-i18n="pricing.enterprise.f1">私有化与专属模型</span></li>
+          <li><span class="mk">+</span><span data-i18n="pricing.enterprise.f2">安全合规审计</span></li>
+          <li><span class="mk">+</span><span data-i18n="pricing.enterprise.f3">驻场与共创支持</span></li>
+        </ul>
+        <a href="#cta" class="btn" data-i18n="pricing.cta.quote">获取报价</a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA ── -->
+<section class="lp-cta reveal" id="cta" aria-labelledby="cta-heading">
+  <div class="grid-overlay" aria-hidden="true" style="opacity: 0.04;">
+    <span></span><span></span><span></span><span></span>
+    <span></span><span></span><span></span><span></span>
+    <span></span><span></span><span></span><span></span>
+  </div>
+  <div class="container">
+    <h2 id="cta-heading" data-i18n="cta.title">让 AI 进入你的业务流程。</h2>
+    <p data-i18n="cta.subtitle">留下需求，我们会在 24 小时内与你对齐方案。</p>
+
+    <div class="row">
+      <a href="mailto:xk103295870@gmail.com" class="cta-shell" role="button">
+        <span class="prompt"><span class="pf">$</span> <span data-i18n="cta.email">直接发邮件</span></span>
+        <span class="action" aria-hidden="true">→</span>
+      </a>
+      <a href="#" class="ghost-link" data-i18n="cta.docs">查看文档中心 →</a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ── FOOTER ── -->
+<footer class="lp-footer" role="contentinfo">
+  <hr class="hr-thick">
+  <div class="container">
+    <div class="row">
+      <div class="brand" data-i18n="brand">W工作室 [v1.0]</div>
+      <nav aria-label="页脚导航">
+        <a href="#product" data-i18n="nav.product">产品</a>
+        <a href="#how" data-i18n="nav.how">流程</a>
+        <a href="#pricing" data-i18n="nav.pricing">定价</a>
+        <a href="#cta" data-i18n="nav.contact">联系</a>
+        <a href="mailto:xk103295870@gmail.com" data-i18n="nav.email">邮件</a>
+      </nav>
+    </div>
+    <div class="row">
+      <span class="prompt-line" id="emailCopy" title="点击复制邮箱">
+        <span class="pf">$</span> xk103295870@gmail.com<span class="blink" aria-hidden="true"></span>
+      </span>
+      <span class="prompt-line" data-i18n="footer.copyright">© 2026 微诺技术工作室 · W工作室.work</span>
+    </div>
+  </div>
+</footer>
+
+<!-- Theme toggle -->
+<div class="theme-bar" role="group" aria-label="主题切换">
+  <button class="active" data-theme-btn="dark" aria-pressed="true">Dark</button>
+  <button data-theme-btn="light" aria-pressed="false">Light</button>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+  // ── Utilities ──
+  const $ = (sel, ctx = document) => ctx.querySelector(sel);
+  const $$ = (sel, ctx = document) => Array.from(ctx.querySelectorAll(sel));
+  const debounce = (fn, ms) => { let t; return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms); }; };
+  const throttle = (fn, ms) => { let last = 0; return (...a) => { const now = Date.now(); if (now - last >= ms) { last = now; fn(...a); } }; };
+
+  // ── Toast ──
+  const toastEl = $('#toast');
+  let toastTimer;
+  function showToast(msg, duration = 2500) {
+    toastEl.textContent = msg;
+    toastEl.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toastEl.classList.remove('show'), duration);
+  }
+
+  // ── Typewriter ──
+  let typewriterId = 0;
+  function runTypewriter(el, speed = 55, delay = 400) {
+    if (!el) return;
+    const text = el.textContent.trim();
+    if (!text) return;
+    const currentId = ++typewriterId;
+    el.dataset.twId = String(currentId);
+    el.classList.remove('typing-done');
+    el.textContent = '';
+    let i = 0;
+    function type() {
+      if (parseInt(el.dataset.twId, 10) !== currentId) return;
+      if (i < text.length) {
+        el.textContent += text.charAt(i);
+        i++;
+        const jitter = (Math.random() * 40 - 20);
+        setTimeout(type, Math.max(15, speed + jitter));
+      } else {
+        el.classList.add('typing-done');
+      }
+    }
+    setTimeout(type, delay);
+  }
+
+  const heroTitle = $('.hero-title');
+  if (heroTitle) runTypewriter(heroTitle, 55, 500);
+
+  // ── Theme Toggle ──
+  const themeBtns = $$('.theme-bar button');
+  themeBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const theme = btn.dataset.themeBtn;
+      document.documentElement.setAttribute('data-theme', theme);
+      themeBtns.forEach(b => { b.classList.remove('active'); b.setAttribute('aria-pressed', 'false'); });
+      btn.classList.add('active');
+      btn.setAttribute('aria-pressed', 'true');
+      localStorage.setItem('wstudio-theme', theme);
+    });
+  });
+  // Restore saved theme
+  const savedTheme = localStorage.getItem('wstudio-theme');
+  if (savedTheme) {
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    themeBtns.forEach(b => {
+      const active = b.dataset.themeBtn === savedTheme;
+      b.classList.toggle('active', active);
+      b.setAttribute('aria-pressed', String(active));
+    });
+  }
+
+  // ── Nav Scroll State ──
+  const navbar = $('#navbar');
+  const onScroll = throttle(() => {
+    navbar.classList.toggle('scrolled', window.scrollY > 10);
+  }, 50);
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  // ── Smooth Scroll for Anchors ──
+  $$('a[href^="#"]').forEach(link => {
+    link.addEventListener('click', (e) => {
+      const href = link.getAttribute('href');
+      if (!href || href === '#') return;
+      const target = document.querySelector(href);
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        // Update focus for accessibility
+        target.setAttribute('tabindex', '-1');
+        target.focus({ preventScroll: true });
+      }
+    });
+  });
+
+  // ── Scroll Reveal ──
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        // Unobserve after reveal to avoid re-triggering
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+  $$('.reveal, .lp-manifesto').forEach(el => revealObserver.observe(el));
+
+  // Stagger reveal delays for sections
+  $$('.lp-products, .lp-code, .lp-steps, .lp-stats, .lp-pricing, .lp-cta').forEach((section, i) => {
+    section.classList.add('reveal');
+    section.classList.add(`reveal-delay-${(i % 4) + 1}`);
+  });
+
+  // ── Stats CountUp ──
+  const countUpObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      const stat = entry.target;
+      const numEl = stat.querySelector('.num');
+      if (!numEl) return;
+      const count = parseInt(stat.dataset.count || '0', 10);
+      const prefix = stat.dataset.prefix || '';
+      const suffix = stat.dataset.suffix || '';
+      const duration = 1500;
+      const start = performance.now();
+
+      function tick(now) {
+        const elapsed = now - start;
+        const progress = Math.min(elapsed / duration, 1);
+        // easeOutQuart
+        const eased = 1 - Math.pow(1 - progress, 4);
+        const current = Math.round(eased * count);
+        numEl.textContent = prefix + current + suffix;
+        if (progress < 1) requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+      stat.classList.add('visible');
+      countUpObserver.unobserve(stat);
+    });
+  }, { threshold: 0.4 });
+
+  $$('.stat').forEach(stat => countUpObserver.observe(stat));
+
+  // ── Cursor Trail (Throttled + RAF) ──
+  let trailPending = false;
+  let trailX = 0, trailY = 0;
+  document.addEventListener('mousemove', throttle((e) => {
+    trailX = e.clientX;
+    trailY = e.clientY;
+    if (trailPending) return;
+    trailPending = true;
+    requestAnimationFrame(() => {
+      trailPending = false;
+      if (Math.random() > 0.7) return;
+      const trail = document.createElement('div');
+      trail.style.cssText = `
+        position: fixed;
+        left: ${trailX}px;
+        top: ${trailY}px;
+        width: 4px;
+        height: 4px;
+        background: var(--accent);
+        pointer-events: none;
+        z-index: 9999;
+        opacity: 0.5;
+        border-radius: 50%;
+        transition: opacity 0.4s ease, transform 0.4s ease;
+      `;
+      document.body.appendChild(trail);
+      requestAnimationFrame(() => {
+        trail.style.opacity = '0';
+        trail.style.transform = 'scale(0)';
+      });
+      setTimeout(() => trail.remove(), 400);
+    });
+  }, 30));
+
+  // ── Email Copy ──
+  const emailCopyEl = $('#emailCopy');
+  if (emailCopyEl) {
+    emailCopyEl.addEventListener('click', () => {
+      const email = 'xk103295870@gmail.com';
+      navigator.clipboard.writeText(email).then(() => {
+        showToast('邮箱已复制到剪贴板');
+      }).catch(() => {
+        // Fallback
+        const ta = document.createElement('textarea');
+        ta.value = email;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        showToast('邮箱已复制到剪贴板');
+      });
+    });
+  }
+
+  // ── Language Switcher ──
+  const translations = {
+    zh: {
+      'hero.eyebrow': '[v1.0 · 可交付]',
+      'hero.title': 'AI 想法，变成现实',
+      'hero.sub': 'W工作室提供从 AI 策略、skill 定制到系统集成与部署的全栈能力。<span class="muted">4-8 周内交付落地可用产品，不是承诺，是流程。</span>',
+      'hero.cta': '预约咨询',
+      'hero.viewProducts': '查看产品矩阵 →',
+      'hero.deliveryCycle': '交付周期',
+      'hero.skillRate': '技能复用率',
+      'hero.deploy': '部署方式',
+      'hero.sla': '支持覆盖',
+      'hero.deliveryCycleValue': '4-8 周',
+      'hero.deployValue': '云端 / 私有化',
+      'nav.product': '产品',
+      'nav.how': '流程',
+      'nav.pricing': '定价',
+      'nav.contact': '联系',
+      'nav.email': '邮件',
+      'nav.aiProducts': 'AI 产品',
+      'nav.bizMember': '商业会员系统',
+      'brand': 'W工作室 [v1.0]',
+      'product.heading': '[ 产品矩阵 ]',
+      'product.subtitle': 'AI 产品栈 · 可复用模块',
+      'product.agent.title': 'Agent 编排平台',
+      'product.agent.desc': '多智能体协作、权限与审批内建。快速构建企业级 Agent 应用。',
+      'product.knowledge.title': '知识与数据引擎',
+      'product.knowledge.desc': 'RAG、QMD 等主流 AI 知识库管理。释放私域知识价值。',
+      'product.content.title': '多模态内容工厂',
+      'product.content.desc': '文本、图像、视频生成与品牌校准。自动化内容生产流水线。',
+      'product.ops.title': '运营 Copilot',
+      'product.ops.desc': '运营分析、指标监控与决策助手。数据驱动的智能运营中枢。',
+      'product.tag.deployed': '可部署',
+      'product.tag.dev': '开发中',
+      'code.heading': '[ 技术架构 ]',
+      'code.desc': '我们不是卖概念，是交付可运行的系统。从 PoC 到生产，一条流水线。',
+      'code.step1': '发现与蓝图',
+      'code.step2': '原型与验证',
+      'code.step3': '工程化上线',
+      'code.resultLabel': '交付物',
+      'code.sprint1Desc': '目标梳理 + 数据边界 + 风险评估',
+      'code.sprint2Desc': '可交互原型 + 评估体系 + PoC 验证',
+      'code.sprint3Desc': '系统集成 + 部署上线 + 持续监控',
+      'code.result': '4-8 周，从想法到上线',
+      'steps.title': '[ 交付流程 ]',
+      'steps.subtitle': '三步上线 · 持续迭代',
+      'steps.output': '输出',
+      'steps.step1.title': '发现',
+      'steps.step1.desc': '一周内梳理目标、数据与风险边界。明确交付物和验收标准。',
+      'steps.step1.tag': '蓝图文档',
+      'steps.step2.title': '原型',
+      'steps.step2.desc': '构建可交互原型与评估体系。小范围验证，降低失败成本。',
+      'steps.step2.tag': 'PoC 系统',
+      'steps.step3.title': '上线',
+      'steps.step3.desc': '系统集成、部署上线与持续监控。7×24 SLA 支持。',
+      'steps.step3.tag': '生产系统',
+      'manifesto.heading': '[ 我们的原则 ]',
+      'manifesto.1': '交付不是承诺，是流程。',
+      'manifesto.2': 'AI 能力必须进入业务流程。',
+      'manifesto.3': '可复用的模块，胜过定制开发。',
+      'manifesto.4': '安全合规，是底线不是卖点。',
+      'stats.skillRate': '技能复用率',
+      'stats.delivery': '周<br>平均交付周期',
+      'stats.sla': 'SLA 支持',
+      'stats.codeDelivery': '代码交付',
+      'pricing.title': '[ 定价方案 ]',
+      'pricing.subtitle': '适配不同阶段 · 灵活扩展',
+      'pricing.starter.name': 'Starter',
+      'pricing.starter.amount': '智能体',
+      'pricing.starter.per': '部署计划',
+      'pricing.starter.blurb': '单一业务场景 PoC，核心 Agent 与组件库，交付智能体部署方案。',
+      'pricing.starter.f1': '单一业务场景 PoC',
+      'pricing.starter.f2': '核心 Agent 与组件库',
+      'pricing.starter.f3': '交付智能体部署方案',
+      'pricing.growth.name': 'Growth',
+      'pricing.growth.amount': '智能体',
+      'pricing.growth.per': '落地部署',
+      'pricing.growth.blurb': '专属交付小组，深度业务系统集成，评估与监控体系。',
+      'pricing.growth.f1': '专属交付小组',
+      'pricing.growth.f2': '深度业务系统集成',
+      'pricing.growth.f3': '评估与监控体系',
+      'pricing.enterprise.name': 'Enterprise',
+      'pricing.enterprise.amount': '企业级',
+      'pricing.enterprise.per': '专属方案',
+      'pricing.enterprise.blurb': '私有化与专属模型，安全合规审计，驻场与共创支持。',
+      'pricing.enterprise.f1': '私有化与专属模型',
+      'pricing.enterprise.f2': '安全合规审计',
+      'pricing.enterprise.f3': '驻场与共创支持',
+      'pricing.cta.plan': '获取方案',
+      'pricing.cta.consult': '预约咨询',
+      'pricing.cta.quote': '获取报价',
+      'cta.title': '让 AI 进入你的业务流程。',
+      'cta.subtitle': '留下需求，我们会在 24 小时内与你对齐方案。',
+      'cta.email': '直接发邮件',
+      'cta.docs': '查看文档中心 →',
+      'form.name': '姓名',
+      'form.namePlaceholder': '您的姓名',
+      'form.email': '邮箱',
+      'form.emailPlaceholder': 'your@company.com',
+      'form.company': '公司',
+      'form.companyPlaceholder': '公司名称',
+      'form.message': '需求描述',
+      'form.messagePlaceholder': '请简要描述您的业务场景和需求...',
+      'form.submit': '提交需求',
+      'form.sending': '发送中...',
+      'form.sent': '已发送',
+      'form.success': '需求已提交，我们会尽快联系您',
+      'footer.copyright': '© 2026 微诺技术工作室 · weinuo.work',
+    },
+    en: {
+      'hero.eyebrow': '[v1.0 · Delivered]',
+      'hero.title': 'Turn AI Ideas Into Reality',
+      'hero.sub': 'W Studio delivers full-stack AI capabilities from strategy to deployment. <span class="muted">4-8 weeks from concept to production. Not a promise, a process.</span>',
+      'hero.cta': 'Book Consultation',
+      'hero.viewProducts': 'View Products →',
+      'hero.deliveryCycle': 'Delivery Cycle',
+      'hero.skillRate': 'Skill Reuse Rate',
+      'hero.deploy': 'Deployment',
+      'hero.sla': 'Support',
+      'hero.deliveryCycleValue': '4-8 Weeks',
+      'hero.deployValue': 'Cloud / On-premise',
+      'nav.product': 'Products',
+      'nav.how': 'Process',
+      'nav.pricing': 'Pricing',
+      'nav.contact': 'Contact',
+      'nav.email': 'Email',
+      'nav.aiProducts': 'AI Products',
+      'nav.bizMember': 'Business Member System',
+      'brand': 'W Studio [v1.0]',
+      'product.heading': '[ Products ]',
+      'product.subtitle': 'AI Product Stack · Reusable Modules',
+      'product.agent.title': 'Agent Orchestration',
+      'product.agent.desc': 'Multi-agent collaboration with built-in permissions and approvals. Build enterprise-grade Agent apps fast.',
+      'product.knowledge.title': 'Knowledge Engine',
+      'product.knowledge.desc': 'RAG, QMD and mainstream AI knowledge base management. Unlock the value of private domain knowledge.',
+      'product.content.title': 'Multimodal Content Factory',
+      'product.content.desc': 'Text, image, video generation with brand calibration. Automated content production pipeline.',
+      'product.ops.title': 'Ops Copilot',
+      'product.ops.desc': 'Operations analysis, metric monitoring and decision support. Data-driven intelligent operations hub.',
+      'product.tag.deployed': 'Available',
+      'product.tag.dev': 'In Dev',
+      'code.heading': '[ Technical Architecture ]',
+      'code.desc': 'We do not sell concepts, we deliver runnable systems. From PoC to production, one pipeline.',
+      'code.step1': 'Discovery & Blueprint',
+      'code.step2': 'Prototype & Validation',
+      'code.step3': 'Production Launch',
+      'code.resultLabel': 'Deliverable',
+      'code.sprint1Desc': 'Goal alignment + Data boundary + Risk assessment',
+      'code.sprint2Desc': 'Interactive prototype + Evaluation + PoC validation',
+      'code.sprint3Desc': 'System integration + Deployment + Monitoring',
+      'code.result': '4-8 weeks from idea to launch',
+      'steps.title': '[ Delivery Process ]',
+      'steps.subtitle': 'Three steps to production · Continuous iteration',
+      'steps.output': 'Output',
+      'steps.step1.title': 'Discover',
+      'steps.step1.desc': 'Clarify goals, data boundaries and risks within one week. Define deliverables and acceptance criteria.',
+      'steps.step1.tag': 'Blueprint',
+      'steps.step2.title': 'Prototype',
+      'steps.step2.desc': 'Build interactive prototypes and evaluation systems. Validate at small scale to reduce failure cost.',
+      'steps.step2.tag': 'PoC System',
+      'steps.step3.title': 'Launch',
+      'steps.step3.desc': 'System integration, deployment and continuous monitoring. 7×24 SLA support.',
+      'steps.step3.tag': 'Production',
+      'manifesto.heading': '[ Our Principles ]',
+      'manifesto.1': 'Delivery is not a promise, it is a process.',
+      'manifesto.2': 'AI capabilities must enter business workflows.',
+      'manifesto.3': 'Reusable modules beat custom development.',
+      'manifesto.4': 'Security and compliance are baseline, not selling points.',
+      'stats.skillRate': 'Skill Reuse',
+      'stats.delivery': 'Weeks<br>Avg. Delivery',
+      'stats.sla': 'SLA Support',
+      'stats.codeDelivery': 'Code Delivery',
+      'pricing.title': '[ Pricing ]',
+      'pricing.subtitle': 'Fit every stage · Scale flexibly',
+      'pricing.starter.name': 'Starter',
+      'pricing.starter.amount': 'Agent',
+      'pricing.starter.per': 'Deployment Plan',
+      'pricing.starter.blurb': 'Single scenario PoC, core Agent and component library, deliverable deployment plan.',
+      'pricing.starter.f1': 'Single scenario PoC',
+      'pricing.starter.f2': 'Core Agent & components',
+      'pricing.starter.f3': 'Deployment plan deliverable',
+      'pricing.growth.name': 'Growth',
+      'pricing.growth.amount': 'Agent',
+      'pricing.growth.per': 'Live Deployment',
+      'pricing.growth.blurb': 'Dedicated delivery team, deep business system integration, evaluation and monitoring.',
+      'pricing.growth.f1': 'Dedicated delivery team',
+      'pricing.growth.f2': 'Deep system integration',
+      'pricing.growth.f3': 'Evaluation & monitoring',
+      'pricing.enterprise.name': 'Enterprise',
+      'pricing.enterprise.amount': 'Enterprise',
+      'pricing.enterprise.per': 'Custom Plan',
+      'pricing.enterprise.blurb': 'Private deployment and dedicated models, security compliance audit, on-site co-creation.',
+      'pricing.enterprise.f1': 'Private deployment & models',
+      'pricing.enterprise.f2': 'Security compliance audit',
+      'pricing.enterprise.f3': 'On-site co-creation support',
+      'pricing.cta.plan': 'Get Plan',
+      'pricing.cta.consult': 'Book Consultation',
+      'pricing.cta.quote': 'Get Quote',
+      'cta.title': 'Let AI enter your business workflow.',
+      'cta.subtitle': 'Leave your requirements, we will align the plan within 24 hours.',
+      'cta.email': 'Email Us',
+      'cta.docs': 'Documentation →',
+      'form.name': 'Name',
+      'form.namePlaceholder': 'Your name',
+      'form.email': 'Email',
+      'form.emailPlaceholder': 'your@company.com',
+      'form.company': 'Company',
+      'form.companyPlaceholder': 'Company name',
+      'form.message': 'Requirements',
+      'form.messagePlaceholder': 'Briefly describe your business scenario and needs...',
+      'form.submit': 'Submit',
+      'form.sending': 'Sending...',
+      'form.sent': 'Sent',
+      'form.success': 'Request submitted, we will contact you soon',
+      'footer.copyright': '© 2026 Weinuo Tech Studio · weinuo.work',
+    },
+    vi: {
+      'hero.eyebrow': '[v1.0 · Có thể triển khai]',
+      'hero.title': 'Biến ý tưởng AI Thành hiện thực',
+      'hero.sub': 'W Studio cung cấp năng lực AI toàn diện từ chiến lược đến triển khai. <span class="muted">4-8 tuần từ ý tưởng đến sản xuất. Không phải lợi hứa, mà là quy trình.</span>',
+      'hero.cta': 'Đặt tư vấn',
+      'hero.viewProducts': 'Xem sản phẩm →',
+      'hero.deliveryCycle': 'Chu kỳ giao hàng',
+      'hero.skillRate': 'Tỷ lệ tái sử dụng',
+      'hero.deploy': 'Triển khai',
+      'hero.sla': 'Hỗ trợ',
+      'hero.deliveryCycleValue': '4-8 tuần',
+      'hero.deployValue': 'Đám mây / Riêng tư',
+      'nav.product': 'Sản phẩm',
+      'nav.how': 'Quy trình',
+      'nav.pricing': 'Bảng giá',
+      'nav.contact': 'Liên hệ',
+      'nav.email': 'Thư',
+      'nav.aiProducts': 'AI Sản phẩm',
+      'nav.bizMember': 'Hệ thống thành viên',
+      'brand': 'W Studio [v1.0]',
+      'product.heading': '[ Sản phẩm ]',
+      'product.subtitle': 'AI Stack · Module tái sử dụng',
+      'product.agent.title': 'Nền tảng Agent',
+      'product.agent.desc': 'Hợp tác đa tác nhân, quyền hạn và phê duyệt tích hợp. Xây dựng ứng dụng Agent cấp doanh nghiệp nhanh chóng.',
+      'product.knowledge.title': 'Công cụ tri thức',
+      'product.knowledge.desc': 'Quản lý cơ sở tri thức AI chính thống như RAG, QMD. Khai phá giá trị tri thức riêng.',
+      'product.content.title': 'Nhà máy nội dung',
+      'product.content.desc': 'Tạo văn bản, hình ảnh, video với hiệu chỉnh thương hiệu. Dây chuyền sản xuất nội dung tự động.',
+      'product.ops.title': 'Ops Copilot',
+      'product.ops.desc': 'Phân tích vận hành, giám sát chỉ số và hỗ trợ quyết định. Trung tâm vận hành thông minh.',
+      'product.tag.deployed': 'Có sẵn',
+      'product.tag.dev': 'Đang phát triển',
+      'code.heading': '[ Kiến trúc kỹ thuật ]',
+      'code.desc': 'Chúng tôi không bán khái niệm, chúng tôi giao hệ thống có thể chạy. Từ PoC đến production, một pipeline.',
+      'code.step1': 'Khám phá & Thiết kế',
+      'code.step2': 'Nguyên mẫu & Xác thực',
+      'code.step3': 'Ra mắt Production',
+      'code.resultLabel': 'Kết quả',
+      'code.sprint1Desc': 'Làm rõ mục tiêu + Ranh giới dữ liệu + Đánh giá rủi ro',
+      'code.sprint2Desc': 'Prototype tương tác + Đánh giá + Xác thực PoC',
+      'code.sprint3Desc': 'Tích hợp hệ thống + Triển khai + Giám sát',
+      'code.result': '4-8 tuần từ ý tưởng đến ra mắt',
+      'steps.title': '[ Quy trình giao hàng ]',
+      'steps.subtitle': 'Ba bước lên production · Liên tục cải tiến',
+      'steps.output': 'Kết quả',
+      'steps.step1.title': 'Khám phá',
+      'steps.step1.desc': 'Làm rõ mục tiêu, ranh giới dữ liệu và rủi ro trong một tuần. Xác định deliverables và tiêu chí chấp nhận.',
+      'steps.step1.tag': 'Tài liệu thiết kế',
+      'steps.step2.title': 'Nguyên mẫu',
+      'steps.step2.desc': 'Xây dựng prototype tương tác và hệ thống đánh giá. Xác thực quy mô nhỏ để giảm chi phí thất bại.',
+      'steps.step2.tag': 'Hệ thống PoC',
+      'steps.step3.title': 'Ra mắt',
+      'steps.step3.desc': 'Tích hợp hệ thống, triển khai và giám sát liên tục. Hỗ trợ SLA 7×24.',
+      'steps.step3.tag': 'Hệ thống production',
+      'manifesto.heading': '[ Nguyên tắc ]',
+      'manifesto.1': 'Giao hàng không phải lợi hứa, mà là quy trình.',
+      'manifesto.2': 'Năng lực AI phải đi vào quy trình kinh doanh.',
+      'manifesto.3': 'Module tái sử dụng vượt trội hơn phát triển tùy chỉnh.',
+      'manifesto.4': 'Bảo mật và tuân thủ là cơ sở, không phải điểm bán hàng.',
+      'stats.skillRate': 'Tái sử dụng',
+      'stats.delivery': 'Tuần<br>Thờigian TB',
+      'stats.sla': 'Hỗ trợ SLA',
+      'stats.codeDelivery': 'Giao mã nguồn',
+      'pricing.title': '[ Bảng giá ]',
+      'pricing.subtitle': 'Phù hợp mọi giai đoạn · Mở rộng linh hoạt',
+      'pricing.starter.name': 'Starter',
+      'pricing.starter.amount': 'Agent',
+      'pricing.starter.per': 'Kế hoạch triển khai',
+      'pricing.starter.blurb': 'PoC một kịch bản, thư viện Agent và component cốt lõi, kế hoạch triển khai.',
+      'pricing.starter.f1': 'PoC một kịch bản',
+      'pricing.starter.f2': 'Agent & component cốt lõi',
+      'pricing.starter.f3': 'Kế hoạch triển khai',
+      'pricing.growth.name': 'Growth',
+      'pricing.growth.amount': 'Agent',
+      'pricing.growth.per': 'Triển khai thực tế',
+      'pricing.growth.blurb': 'Nhóm giao hàng chuyên trách, tích hợp sâu hệ thống doanh nghiệp, đánh giá và giám sát.',
+      'pricing.growth.f1': 'Nhóm giao hàng chuyên trách',
+      'pricing.growth.f2': 'Tích hợp sâu hệ thống',
+      'pricing.growth.f3': 'Đánh giá & giám sát',
+      'pricing.enterprise.name': 'Enterprise',
+      'pricing.enterprise.amount': 'Doanh nghiệp',
+      'pricing.enterprise.per': 'Giải pháp riêng',
+      'pricing.enterprise.blurb': 'Triển khai riêng và mô hình chuyên dụng, kiểm toán tuân thủ bảo mật, đồng sáng tạo tại chỗ.',
+      'pricing.enterprise.f1': 'Triển khai riêng & mô hình',
+      'pricing.enterprise.f2': 'Kiểm toán tuân thủ bảo mật',
+      'pricing.enterprise.f3': 'Đồng sáng tạo tại chỗ',
+      'pricing.cta.plan': 'Nhận kế hoạch',
+      'pricing.cta.consult': 'Đặt tư vấn',
+      'pricing.cta.quote': 'Nhận báo giá',
+      'cta.title': 'Để AI đi vào quy trình kinh doanh của bạn.',
+      'cta.subtitle': 'Để lại yêu cầu, chúng tôi sẽ liên hệ trong 24 giờ.',
+      'cta.email': 'Gửi email',
+      'cta.docs': 'Tài liệu →',
+      'form.name': 'Họ tên',
+      'form.namePlaceholder': 'Họ tên của bạn',
+      'form.email': 'Email',
+      'form.emailPlaceholder': 'your@company.com',
+      'form.company': 'Công ty',
+      'form.companyPlaceholder': 'Tên công ty',
+      'form.message': 'Mô tả nhu cầu',
+      'form.messagePlaceholder': 'Mô tả ngắn gọn kịch bản kinh doanh và nhu cầu...',
+      'form.submit': 'Gửi yêu cầu',
+      'form.sending': 'Đang gửi...',
+      'form.sent': 'Đã gửi',
+      'form.success': 'Yêu cầu đã được gửi, chúng tôi sẽ liên hệ sớm',
+      'footer.copyright': '© 2026 Weinuo Tech Studio · weinuo.work',
+    }
+  };
+
+  let currentLang = 'zh';
+
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const lang = btn.dataset.lang;
+      if (lang === currentLang) return;
+      currentLang = lang;
+      document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      // Update all translatable elements
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.dataset.i18n;
+        const text = translations[lang]?.[key];
+        if (text !== undefined) {
+          el.innerHTML = text;
+        }
+      });
+
+      // Update placeholders
+      document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+        const key = el.dataset.i18nPlaceholder;
+        const text = translations[lang]?.[key];
+        if (text !== undefined) {
+          el.placeholder = text;
+        }
+      });
+
+      // Re-trigger typewriter for hero title
+      const ht = $('.hero-title');
+      if (ht) runTypewriter(ht, 55, 150);
+
+      // Re-trigger count-up animations for stats
+      $$('.stat').forEach(stat => {
+        stat.classList.remove('visible');
+      });
+      // Force re-observe
+      setTimeout(() => {
+        $$('.stat').forEach(stat => countUpObserver.observe(stat));
+      }, 100);
+    });
+  });
+
+  // Prevent empty hash clicks from scrolling to top
+  $$('a[href="#"]').forEach(a => {
+    a.addEventListener('click', (e) => e.preventDefault());
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="W工作室文档中心 — 智慧商圈数字化CRM运营方案的产品文档与接入指南。">
+<meta name="theme-color" content="#050505">
+<title>文档中心 | W工作室</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-dark: #050505; --text-dark: #F5F5F5; --muted: #757575;
+    --border: #F5F5F5; --accent: #00FF66; --hair: 1px;
+    --sp-1: 8px; --sp-2: 16px; --sp-3: 24px; --sp-4: 32px; --sp-5: 48px; --sp-6: 64px; --sp-7: 96px;
+    --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --sidebar-w: 260px;
+  }
+  [data-theme="dark"] { --c-bg: #050505; --c-text: #F5F5F5; --c-border: #F5F5F5; --c-muted: #757575; --c-accent: #00FF66; --c-surface: #0A0A0A; }
+  [data-theme="light"] { --c-bg: #FFFFFF; --c-text: #000000; --c-border: #000000; --c-muted: #757575; --c-accent: #00FF66; --c-surface: #F5F5F5; }
+  * { box-sizing: border-box; }
+  *::selection { background: var(--accent); color: #000; }
+  html, body { margin:0; padding:0; background: var(--c-bg); color: var(--c-text); font-family: var(--font-mono); font-size:14px; line-height:1.6; font-weight:400; -webkit-font-smoothing: antialiased; }
+  a { color:inherit; text-decoration:none; }
+
+  /* ── NAV ── */
+  .lp-nav { border-bottom: var(--hair) solid var(--c-border); background: var(--c-bg); position:sticky; top:0; z-index:50; }
+  .lp-nav .container { max-width:1200px; margin:0 auto; padding:0 var(--sp-4); display:flex; align-items:center; justify-content:space-between; height:64px; }
+  .lp-nav-left { display:flex; align-items:baseline; gap:var(--sp-2); }
+  .lp-wordmark { font-size:18px; font-weight:700; letter-spacing:-0.01em; }
+  .lp-version { font-size:11px; color:var(--c-muted); font-weight:500; }
+  .lp-nav-right { display:flex; align-items:center; gap:var(--sp-4); margin-left:auto; }
+  .lp-nav-right a { font-size:12px; font-weight:500; letter-spacing:0.02em; position:relative; padding:4px 0; }
+  .lp-nav-right a::after { content:''; position:absolute; bottom:-2px; left:0; width:0; height:1px; background:var(--accent); transition:width 0.3s ease; }
+  .lp-nav-right a:hover::after { width:100%; }
+
+  /* ── LAYOUT ── */
+  .doc-layout { display:flex; min-height: calc(100vh - 65px); }
+
+  /* ── SIDEBAR ── */
+  .doc-sidebar {
+    width: var(--sidebar-w);
+    border-right: var(--hair) solid var(--c-border);
+    background: var(--c-bg);
+    position: fixed;
+    top: 65px;
+    bottom: 0;
+    left: 0;
+    overflow-y: auto;
+    padding: var(--sp-4) 0;
+  }
+  .doc-sidebar-group { margin-bottom: var(--sp-4); }
+  .doc-sidebar-title {
+    padding: 0 var(--sp-3);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--c-muted);
+    margin-bottom: var(--sp-2);
+  }
+  .doc-sidebar a {
+    display: block;
+    padding: 8px var(--sp-3);
+    font-size: 13px;
+    color: var(--c-text);
+    border-left: 2px solid transparent;
+    transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+  }
+  .doc-sidebar a:hover, .doc-sidebar a.active {
+    background: rgba(0, 255, 102, 0.06);
+    border-left-color: var(--accent);
+    color: var(--c-text);
+  }
+
+  /* ── MAIN ── */
+  .doc-main {
+    margin-left: var(--sidebar-w);
+    flex: 1;
+    max-width: 720px;
+    padding: var(--sp-6) var(--sp-5);
+  }
+  .doc-main h1 {
+    font-size: clamp(32px, 4vw, 48px);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+    margin: 0 0 var(--sp-4) 0;
+  }
+  .doc-main h2 {
+    font-size: 20px;
+    font-weight: 700;
+    margin: var(--sp-5) 0 var(--sp-3) 0;
+    padding-bottom: var(--sp-2);
+    border-bottom: var(--hair) solid var(--c-border);
+    letter-spacing: -0.01em;
+  }
+  .doc-main h3 {
+    font-size: 16px;
+    font-weight: 700;
+    margin: var(--sp-4) 0 var(--sp-2) 0;
+  }
+  .doc-main p {
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--c-muted);
+    margin: 0 0 var(--sp-3) 0;
+  }
+  .doc-main p strong { color: var(--c-text); font-weight: 600; }
+  .doc-main ul, .doc-main ol { margin: 0 0 var(--sp-3) 0; padding-left: 20px; }
+  .doc-main li { font-size: 14px; line-height: 1.7; color: var(--c-muted); margin-bottom: 6px; }
+  .doc-main li::marker { color: var(--accent); }
+  .doc-main a { color: var(--accent); border-bottom: var(--hair) solid var(--accent); }
+  .doc-main a:hover { color: var(--c-text); border-color: var(--c-text); }
+  .doc-main code {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    background: var(--c-surface);
+    padding: 2px 6px;
+    border: var(--hair) solid var(--c-border);
+  }
+  .doc-main pre {
+    background: var(--c-surface);
+    border: var(--hair) solid var(--c-border);
+    padding: var(--sp-3);
+    overflow-x: auto;
+    margin: 0 0 var(--sp-3) 0;
+  }
+  .doc-main pre code { background: none; border: none; padding: 0; font-size: 13px; line-height: 1.7; }
+  .doc-main blockquote {
+    border-left: 2px solid var(--accent);
+    margin: 0 0 var(--sp-3) 0;
+    padding: var(--sp-2) var(--sp-3);
+    background: var(--c-surface);
+  }
+  .doc-main blockquote p { margin: 0; color: var(--c-text); }
+  .doc-main table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0 0 var(--sp-3) 0;
+    font-size: 13px;
+  }
+  .doc-main th, .doc-main td {
+    border: var(--hair) solid var(--c-border);
+    padding: 10px 12px;
+    text-align: left;
+  }
+  .doc-main th {
+    background: var(--c-surface);
+    font-weight: 600;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .doc-main td { color: var(--c-muted); }
+
+  /* ── THEME TOGGLE ── */
+  .theme-bar {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 0;
+    background: var(--c-bg);
+    border: var(--hair) solid var(--c-border);
+    z-index: 1000;
+  }
+  .theme-bar button {
+    padding: 8px 16px;
+    border: 0;
+    background: transparent;
+    color: var(--c-muted);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+  .theme-bar button + button { border-left: var(--hair) solid var(--c-border); }
+  .theme-bar button.active { background: var(--accent); color: #000; }
+
+  /* ── MOBILE ── */
+  @media (max-width: 880px) {
+    .doc-sidebar { display: none; }
+    .doc-main { margin-left: 0; padding: var(--sp-5) var(--sp-4); max-width: 100%; }
+    .lp-nav-right { gap: var(--sp-2); }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav class="lp-nav">
+  <div class="container">
+    <div class="lp-nav-left">
+      <a href="smart-business-district.html" class="lp-wordmark">W工作室</a>
+      <span class="lp-version">[1.0.0]</span>
+  </div>
+    <div class="lp-nav-right">
+      <a href="smart-business-district.html#features">产品</a>
+      <a href="smart-business-district.html#steps">接入</a>
+      <a href="smart-business-district.html#cta">联系</a>
+      <a href="http://admin.mall.alipayjf.com/login?redirect=%2Findex" target="_blank" class="nav-login" style="display:inline-flex;align-items:center;height:32px;padding:0 36px;margin-left:24px;border:var(--hair) solid var(--accent);background:transparent;color:var(--accent);font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;">商家登陆</a>
+    </div>
+  </div>
+</nav>
+
+<div class="doc-layout">
+
+<!-- ── SIDEBAR ── -->
+<aside class="doc-sidebar">
+  <div class="doc-sidebar-group">
+    <div class="doc-sidebar-title">Getting Started</div>
+    <a href="#overview" class="active">产品概述</a>
+    <a href="#quickstart">快速开始</a>
+    <a href="#architecture">系统架构</a>
+  </div>
+  <div class="doc-sidebar-group">
+    <div class="doc-sidebar-title">Integration</div>
+    <a href="#prerequisites">接入前提</a>
+    <a href="#api">API 文档</a>
+    <a href="#webhook">Webhook 配置</a>
+  </div>
+  <div class="doc-sidebar-group">
+    <div class="doc-sidebar-title">Reference</div>
+    <a href="#faq">常见问题</a>
+    <a href="#changelog">更新日志</a>
+  </div>
+</aside>
+
+<!-- ── MAIN ── -->
+<main class="doc-main">
+
+<h1 id="overview">产品概述</h1>
+<p>智慧商圈数字化CRM运营方案，是 W工作室 面向购物中心、百货商场、商业街区、交通枢纽商业打造的<strong>全渠道营销服务数智中台</strong>。通过整合微信支付、支付宝、美团、抖音等多平台数据，建立商圈独立会员数据库，实现支付即积分、精准定向营销和会员深度运营。</p>
+
+<h2 id="quickstart">快速开始</h2>
+<h3>1. 开通主体账号</h3>
+<p>准备微信小程序账户、微信支付商户号、支付宝商户号。服务中台团队将配合完成资料收集与账号配置。</p>
+
+<h3>2. 数据接口对接</h3>
+<p>以零成本接入为主，对接支付数据回传接口。支持微信、支付宝、美团、抖音等多渠道数据统一汇总到商圈独立会员数据库。</p>
+
+<h3>3. 配置营销活动</h3>
+<p>在管理后台配置积分规则、券体系、停车权益、会员等级等，启动支付即积分功能。</p>
+
+<h2 id="architecture">系统架构</h2>
+<pre><code>┌─────────────────────────────────────────┐
+│          智慧商圈数智中台                  │
+├─────────────────────────────────────────┤
+│  会员系统  │  营销中心  │  积分商城  │  数据看板  │
+├─────────────────────────────────────────┤
+│  微信支付  │  支付宝   │  美团     │  抖音     │
+├─────────────────────────────────────────┤
+│           商圈独立会员数据库               │
+└─────────────────────────────────────────┘</code></pre>
+
+<h2 id="prerequisites">接入前提</h2>
+<table>
+  <tr><th>项目</th><th>说明</th><th>周期</th></tr>
+  <tr><td>微信小程序</td><td>需开通并认证小程序账号</td><td>1-2 天</td></tr>
+  <tr><td>微信支付</td><td>开通微信支付商户号</td><td>2-3 天</td></tr>
+  <tr><td>支付宝</td><td>开通支付宝商户号</td><td>2-3 天</td></tr>
+  <tr><td>数据对接</td><td>支付数据回传接口联调</td><td>3-4 天</td></tr>
+</table>
+
+<h2 id="api">API 文档</h2>
+<h3>会员注册接口</h3>
+<pre><code>POST /api/v1/member/register
+Content-Type: application/json
+
+{
+  "phone": "13800138000",
+  "source": "wechat",
+  "mall_id": "M2024001"
+}</code></pre>
+
+<h3>积分查询接口</h3>
+<pre><code>GET /api/v1/points/balance?member_id=12345&mall_id=M2024001</code></pre>
+
+<h2 id="webhook">Webhook 配置</h2>
+<p>当会员发生支付、积分变动、券领取等事件时，系统会向配置的 Webhook URL 推送事件通知。</p>
+<pre><code>{
+  "event": "payment.success",
+  "timestamp": 1713502800,
+  "data": {
+    "member_id": "12345",
+    "amount": 299.00,
+    "points_earned": 299,
+    "mall_id": "M2024001"
+  }
+}</code></pre>
+
+<h2 id="faq">常见问题</h2>
+<h3>Q: 是否需要改造商家的收银系统？</h3>
+<p>A: 不需要。通过支付数据回传即可实现积分自动叠加，无需对现场商家做任何软硬件改造。</p>
+
+<h3>Q: 支持哪些停车系统？</h3>
+<p>A: 目前已适配科拓、立方、宜泊等主流停车系统，支持积分兑换停车券和在线支付。</p>
+
+<h3>Q: 数据安全如何保障？</h3>
+<p>A: 所有会员数据存储在商圈独立数据库中，采用 AES-256 加密传输，符合等保三级要求。</p>
+
+<h2 id="changelog">更新日志</h2>
+<h3>v2.4 — 2024.04</h3>
+<ul>
+  <li>新增抖音数据接入支持</li>
+  <li>优化积分商城兑换流程</li>
+</ul>
+<h3>v2.3 — 2024.01</h3>
+<ul>
+  <li>新增美团数据接入</li>
+  <li>上线直播带货功能模块</li>
+  <li>优化停车系统对接稳定性</li>
+</ul>
+
+</main>
+
+</div>
+
+<!-- Theme toggle -->
+<div class="theme-bar">
+  <button class="active" data-theme-btn="dark">Dark</button>
+  <button data-theme-btn="light">Light</button>
+</div>
+
+<script>
+  // Theme toggle
+  document.querySelectorAll('.theme-bar button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const theme = btn.dataset.themeBtn;
+      document.documentElement.setAttribute('data-theme', theme);
+      document.querySelectorAll('.theme-bar button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      localStorage.setItem('wstudio-theme', theme);
+    });
+  });
+  const savedTheme = localStorage.getItem('wstudio-theme');
+  if (savedTheme) {
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    document.querySelectorAll('.theme-bar button').forEach(b => { b.classList.toggle('active', b.dataset.themeBtn === savedTheme); });
+  }
+
+  // Sidebar active state
+  document.querySelectorAll('.doc-sidebar a').forEach(link => {
+    link.addEventListener('click', () => {
+      document.querySelectorAll('.doc-sidebar a').forEach(a => a.classList.remove('active'));
+      link.classList.add('active');
+    });
+  });
+
+  // Smooth scroll
+  document.querySelectorAll('a[href^="#"]').forEach(link => {
+    link.addEventListener('click', (e) => {
+      const href = link.getAttribute('href');
+      if (!href || href === '#') return;
+      const target = document.querySelector(href);
+      if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+    });
+  });
+</script>
+
+</body>
+</html>

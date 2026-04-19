@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="智慧商圈数字化CRM运营方案 — 支付即积分、会员营销、数据中台，为商业体打造全渠道营销服务数智中台。">
+<meta name="theme-color" content="#050505">
+<title>智慧商圈 · 数字化CRM运营方案 | W工作室</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-dark:   #050505;
+    --text-dark: #F5F5F5;
+    --muted:     #757575;
+    --border:    #F5F5F5;
+    --accent:    #00FF66;
+    --alert:     #FF3B00;
+    --hair: 1px;
+    --sp-1: 8px; --sp-2: 16px; --sp-3: 24px; --sp-4: 32px; --sp-5: 48px; --sp-6: 64px; --sp-7: 96px; --sp-8: 128px;
+    --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  [data-theme="dark"] {
+    --c-bg: #050505; --c-text: #F5F5F5; --c-border: #F5F5F5; --c-muted: #757575; --c-accent: #00FF66;
+  }
+  [data-theme="light"] {
+    --c-bg: #FFFFFF; --c-text: #000000; --c-border: #000000; --c-muted: #757575; --c-accent: #00FF66;
+  }
+  * { box-sizing: border-box; }
+  *::selection { background: var(--accent); color: #000; }
+  html, body { margin:0; padding:0; background: var(--c-bg); color: var(--c-text); font-family: var(--font-mono); font-size:14px; line-height:1.55; font-weight:400; -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
+  a { color:inherit; text-decoration:none; }
+  .container { max-width:1200px; margin:0 auto; padding:0 var(--sp-4); }
+
+  /* ── NAV ── */
+  .lp-nav { border-bottom: var(--hair) solid var(--c-border); background: var(--c-bg); position:sticky; top:0; z-index:50; transition: backdrop-filter 200ms, background 200ms; }
+  .lp-nav.scrolled { backdrop-filter: blur(12px); background: rgba(5,5,5,0.85); }
+  [data-theme="light"] .lp-nav.scrolled { background: rgba(255,255,255,0.85); }
+  .lp-nav .container { display:flex; align-items:center; justify-content:space-between; height:64px; }
+  .lp-nav-left { display:flex; align-items:baseline; gap:var(--sp-2); }
+  .lp-wordmark { font-size:18px; font-weight:700; letter-spacing:-0.01em; }
+  .lp-version { font-size:11px; color:var(--c-muted); font-weight:500; }
+  .lp-nav-right { display:flex; align-items:center; gap:var(--sp-4); margin-left:auto; }
+  .lp-nav-right a { font-size:12px; font-weight:500; letter-spacing:0.02em; position:relative; padding:4px 0; }
+  .lp-nav-right a::after { content:''; position:absolute; bottom:-2px; left:0; width:0; height:1px; background:var(--accent); transition:width 0.3s ease; }
+  .lp-nav-right a:hover::after { width:100%; }
+  .nav-login {
+    display: inline-flex;
+    align-items: center;
+    height: 32px;
+    padding: 0 36px;
+    margin-left: 24px;
+    border: var(--hair) solid var(--accent);
+    background: transparent;
+    color: var(--accent);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    transition: background 0.2s ease, color 0.2s ease;
+  }
+  .nav-login:hover {
+    background: var(--accent);
+    color: #000;
+  }
+  .nav-login::after { display: none !important; }
+
+  /* ── HERO ── */
+  .lp-hero { position:relative; border-bottom:var(--hair) solid var(--c-border); padding: var(--sp-8) 0 var(--sp-7); overflow:hidden; }
+  .grid-bg { position:absolute; inset:0; pointer-events:none; background-image: linear-gradient(to right, rgba(255,255,255,0.04) var(--hair), transparent var(--hair)), linear-gradient(to bottom, rgba(255,255,255,0.04) var(--hair), transparent var(--hair)); background-size:48px 48px; z-index:0; }
+  [data-theme="light"] .grid-bg { background-image: linear-gradient(to right, rgba(0,0,0,0.06) var(--hair), transparent var(--hair)), linear-gradient(to bottom, rgba(0,0,0,0.06) var(--hair), transparent var(--hair)); }
+  .lp-hero .container { position:relative; z-index:2; }
+  .hero-eyebrow { display:inline-flex; align-items:center; gap:var(--sp-2); padding:6px var(--sp-2); border:var(--hair) solid var(--c-border); margin-bottom:var(--sp-4); }
+  .hero-eyebrow .dot { width:8px; height:8px; background:var(--accent); display:inline-block; }
+  .hero-eyebrow span { font-size:11px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; }
+  .hero-title { font-weight:700; font-size: clamp(44px, 7vw, 96px); line-height:1.05; letter-spacing:-0.03em; margin:0 0 var(--sp-5) 0; max-width:18ch; opacity:0; animation: fadeInUp 0.8s var(--ease-out) forwards; animation-delay:0.2s; }
+  .hero-sub { font-size:16px; line-height:1.6; color:var(--c-text); max-width:60ch; margin:0 0 var(--sp-6) 0; }
+  .hero-sub .muted { color:var(--c-muted); }
+
+  .hero-stats { display:grid; grid-template-columns: repeat(3, 1fr); gap:0; border:var(--hair) solid var(--c-border); background: var(--c-bg); }
+  .hero-stat { padding: var(--sp-4) var(--sp-3); border-right: var(--hair) solid var(--c-border); }
+  .hero-stat:last-child { border-right:0; }
+  .hero-stat .num { font-size: clamp(32px, 4vw, 56px); font-weight:700; letter-spacing:-0.03em; line-height:1; margin-bottom:6px; }
+  .hero-stat .lbl { font-size:11px; color:var(--c-muted); letter-spacing:0.08em; text-transform:uppercase; }
+
+  /* ── SECTIONS ── */
+  .lp-section { border-bottom:var(--hair) solid var(--c-border); padding: var(--sp-8) 0; }
+  .section-head { display:flex; justify-content:space-between; align-items:baseline; margin-bottom:var(--sp-5); padding-bottom:var(--sp-3); border-bottom:var(--hair) solid var(--c-border); }
+  .section-head h2 { font-size:11px; font-weight:500; letter-spacing:0.1em; text-transform:uppercase; margin:0; }
+  .section-head .label-muted { font-size:11px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; color:var(--c-muted); }
+
+  /* ── PROBLEM ── */
+  .problem-grid { display:grid; grid-template-columns: 1fr 1fr; gap: var(--sp-5); }
+  .problem-card { border:var(--hair) solid var(--c-border); padding: var(--sp-5); }
+  .problem-card h3 { font-size:18px; font-weight:700; margin:0 0 var(--sp-3) 0; letter-spacing:-0.01em; }
+  .problem-card ol { margin:0; padding:0 0 0 18px; }
+  .problem-card li { font-size:13px; line-height:1.7; color:var(--c-muted); padding: 4px 0; }
+  .problem-card li::marker { color: var(--accent); }
+
+  /* ── SOLUTION ── */
+  .solution-block { border:var(--hair) solid var(--c-border); padding: var(--sp-5); margin-bottom: var(--sp-5); }
+  .solution-block h3 { font-size:18px; font-weight:700; margin:0 0 var(--sp-3) 0; }
+  .solution-block p { font-size:14px; line-height:1.65; color:var(--c-muted); margin:0 0 var(--sp-3) 0; max-width:70ch; }
+  .solution-flow { display:grid; grid-template-columns: repeat(3, 1fr); gap:0; border:var(--hair) solid var(--c-border); }
+  .flow-step { padding: var(--sp-4) var(--sp-3); border-right:var(--hair) solid var(--c-border); }
+  .flow-step:last-child { border-right:0; }
+  .flow-step .num { font-size:11px; font-weight:500; color:var(--c-accent); letter-spacing:0.1em; margin-bottom:var(--sp-2); }
+  .flow-step h4 { font-size:16px; font-weight:700; margin:0 0 var(--sp-2) 0; }
+  .flow-step p { font-size:13px; color:var(--c-muted); line-height:1.6; margin:0; }
+
+  /* ── FEATURES ── */
+  .feature-grid { display:grid; grid-template-columns: repeat(2, 1fr); gap:0; border:var(--hair) solid var(--c-border); }
+  .feature-card { padding: var(--sp-5); border-right:var(--hair) solid var(--c-border); border-bottom:var(--hair) solid var(--c-border); }
+  .feature-card:nth-child(2n) { border-right:0; }
+  .feature-card:nth-last-child(-n+2) { border-bottom:0; }
+  .feature-card .card-label { font-size:10px; font-weight:500; letter-spacing:0.1em; text-transform:uppercase; color:var(--c-muted); margin-bottom:var(--sp-2); }
+  .feature-card h3 { font-size:20px; font-weight:700; letter-spacing:-0.01em; margin:0 0 var(--sp-2) 0; }
+  .feature-card p { font-size:13px; color:var(--c-muted); line-height:1.65; margin:0 0 var(--sp-3) 0; }
+  .feature-card .tag { display:inline-block; padding:4px 8px; border:var(--hair) solid var(--c-border); font-size:10px; font-weight:500; letter-spacing:0.06em; text-transform:uppercase; color:var(--c-muted); }
+
+  /* ── STEPS ── */
+  .steps-grid { display:grid; grid-template-columns: repeat(3, 1fr); gap:0; border:var(--hair) solid var(--c-border); }
+  .step { padding: var(--sp-5) var(--sp-4); border-right:var(--hair) solid var(--c-border); display:flex; flex-direction:column; }
+  .step:last-child { border-right:0; }
+  .step .num { font-size:11px; font-weight:500; color:var(--c-accent); letter-spacing:0.1em; margin-bottom:var(--sp-3); }
+  .step h3 { font-size:22px; font-weight:700; margin:0 0 var(--sp-2) 0; }
+  .step p { font-size:13px; line-height:1.65; color:var(--c-muted); margin:0 0 var(--sp-3) 0; }
+  .step .hint { margin-top:auto; font-size:11px; color:var(--c-muted); letter-spacing:0.04em; border-top:var(--hair) solid var(--c-border); padding-top:var(--sp-2); }
+  .step .hint .tag { color:var(--c-text); font-weight:500; }
+
+  /* ── CTA ── */
+  .lp-cta { border-bottom:var(--hair) solid var(--c-border); padding: var(--sp-8) 0; text-align:center; position:relative; overflow:hidden; }
+  .lp-cta .container { position:relative; z-index:2; }
+  .lp-cta h2 { font-weight:700; font-size: clamp(40px, 7vw, 96px); line-height:1.05; letter-spacing:-0.03em; margin:0 0 var(--sp-4) 0; }
+  .lp-cta p { font-size:16px; color:var(--c-muted); max-width:56ch; margin:0 auto var(--sp-5); line-height:1.5; }
+  .cta-row { display:flex; justify-content:center; align-items:center; gap:var(--sp-3); flex-wrap:wrap; }
+  .cta-shell { display:inline-flex; align-items:stretch; border:var(--hair) solid var(--c-border); background:var(--c-bg); height:48px; }
+  .cta-shell .prompt { display:flex; align-items:center; padding:0 var(--sp-3); font-size:13px; font-weight:500; }
+  .cta-shell .prompt .pf { color:var(--accent); margin-right:6px; }
+  .cta-shell .action { display:flex; align-items:center; justify-content:center; padding:0 var(--sp-3); background:var(--accent); color:#000; border:0; font-family:var(--font-mono); font-size:11px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; cursor:pointer; }
+
+  /* ── FOOTER ── */
+  .lp-footer { padding: var(--sp-6) 0 var(--sp-5); }
+  .lp-footer .container { display:grid; gap:var(--sp-5); }
+  .lp-footer .row { display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap; gap:var(--sp-3); }
+  .lp-footer .brand { font-size:16px; font-weight:700; }
+  .lp-footer nav { display:flex; gap:var(--sp-4); }
+  .lp-footer nav a { font-size:12px; font-weight:500; }
+  .lp-footer .prompt-line { font-size:12px; color:var(--c-muted); }
+  .lp-footer .prompt-line .pf { color:var(--accent); }
+
+  /* ── THEME TOGGLE ── */
+  .theme-bar { position:fixed; bottom:24px; left:50%; transform:translateX(-50%); display:flex; gap:0; background:var(--c-bg); border:var(--hair) solid var(--c-border); z-index:1000; }
+  .theme-bar button { padding:8px 16px; border:0; background:transparent; color:var(--c-muted); font-family:var(--font-mono); font-size:11px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; cursor:pointer; }
+  .theme-bar button + button { border-left:var(--hair) solid var(--c-border); }
+  .theme-bar button.active { background:var(--accent); color:#000; }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeInUp { from { opacity:0; transform:translateY(30px); } to { opacity:1; transform:translateY(0); } }
+  .reveal { opacity:0; transform:translateY(30px); transition: opacity 0.6s var(--ease-out), transform 0.6s var(--ease-out); }
+  .reveal.visible { opacity:1; transform:translateY(0); }
+
+  /* ── MOBILE ── */
+  @media (max-width: 880px) {
+    .hero-stats { grid-template-columns: 1fr; }
+    .hero-stat { border-right:0; border-bottom:var(--hair) solid var(--c-border); }
+    .hero-stat:last-child { border-bottom:0; }
+    .problem-grid { grid-template-columns: 1fr; }
+    .solution-flow { grid-template-columns: 1fr; }
+    .flow-step { border-right:0; border-bottom:var(--hair) solid var(--c-border); }
+    .flow-step:last-child { border-bottom:0; }
+    .feature-grid { grid-template-columns: 1fr; }
+    .feature-card { border-right:0; }
+    .steps-grid { grid-template-columns: 1fr; }
+    .step { border-right:0; border-bottom:var(--hair) solid var(--c-border); }
+    .step:last-child { border-bottom:0; }
+    .lp-footer .row { flex-direction:column; align-items:flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav class="lp-nav" id="navbar">
+  <div class="container">
+    <div class="lp-nav-left">
+      <a href="landing-page-oxide.html" class="lp-wordmark">W工作室</a>
+      <span class="lp-version">[1.0.0]</span>
+    </div>
+    <div class="lp-nav-right">
+      <a href="landing-page-oxide.html#product">产品</a>
+      <a href="#features">功能</a>
+      <a href="#steps">接入</a>
+      <a href="docs.html">文档</a>
+      <a href="#cta">联系</a>
+      <a href="http://admin.mall.alipayjf.com/login?redirect=%2Findex" target="_blank" class="nav-login">商家登陆</a>
+    </div>
+  </div>
+</nav>
+
+<main>
+
+<!-- ── HERO ── -->
+<section class="lp-hero">
+  <div class="grid-bg"></div>
+  <div class="container">
+    <div class="hero-eyebrow">
+      <span class="dot"></span>
+      <span>智慧商圈 · 数字化CRM</span>
+    </div>
+    <h1 class="hero-title">支付即积分<br>会员即资产</h1>
+    <p class="hero-sub">
+      为购物中心、百货商场、商业街区、交通枢纽商业打造全渠道营销服务数智中台。
+      <span class="muted">整合微信支付、支付宝、美团以及抖音等数据，建立商圈独立会员数据库，实现精准定向营销。</span>
+    </p>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="num">10<span style="color:var(--c-muted);font-size:0.5em;">+</span></div>
+        <div class="lbl">合作商业地产项目</div>
+      </div>
+      <div class="hero-stat">
+        <div class="num">300000<span style="color:var(--c-muted);font-size:0.5em;">+</span></div>
+        <div class="lbl">会员数据</div>
+      </div>
+      <div class="hero-stat">
+        <div class="num">6<span style="color:var(--c-muted);font-size:0.5em;">+</span></div>
+        <div class="lbl">合作停车系统商</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PROBLEM ── -->
+<section class="lp-section reveal" id="problem">
+  <div class="container">
+    <div class="section-head">
+      <h2>[ 行业痛点 ]</h2>
+      <span class="label-muted">为什么传统会员运营失效</span>
+    </div>
+    <div class="problem-grid">
+      <div class="problem-card">
+        <h3>会员权益体验差</h3>
+        <ol>
+          <li>积分叠加流程复杂，消费者操作门槛高</li>
+          <li>活动触达率低，消费者无体感</li>
+          <li>积分商品无吸引力，兑换意愿低</li>
+        </ol>
+      </div>
+      <div class="problem-card">
+        <h3>落地执行难</h3>
+        <ol>
+          <li>工作流程繁琐，商管运营要求高</li>
+          <li>商家配合度低，推广阻力大</li>
+          <li>硬件成本高，IT改造周期长</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── SOLUTION ── -->
+<section class="lp-section reveal" id="solution">
+  <div class="container">
+    <div class="section-head">
+      <h2>[ 核心方案 ]</h2>
+      <span class="label-muted">0成本接入 · 当天见效</span>
+    </div>
+    <div class="solution-block">
+      <h3>商圈独立会员数据库</h3>
+      <p>微信支付和支付宝针对商圈推出「支付即积分」功能，无需对现场商家做任何软硬件改造，通过支付数据回传实现积分自动叠加。我们建立商圈独立会员数据库，将两端的会员数据统一汇总，打破数据孤岛，实现真正的全渠道会员运营。</p>
+    </div>
+    <div class="solution-flow">
+      <div class="flow-step">
+        <div class="num">[01] 常规券法统</div>
+        <h4>全场券 / 组合券 / 单品券</h4>
+        <p>标准化券体系搭建，覆盖场内全业态，快速建立营销抓手。</p>
+      </div>
+      <div class="flow-step">
+        <div class="num">[02] 打通停车系统</div>
+        <h4>积分兑换停车券 / 在线支付</h4>
+        <p>会员可线上消耗兑换停车券和在线支付，完成整个积分获取和消耗的完整闭环。</p>
+      </div>
+      <div class="flow-step">
+        <div class="num">[03] 深度运营</div>
+        <h4>会员画像 / 二次营销</h4>
+        <p>分析消费频次、金额等数据，做会员营销的深度运营，提升复购。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FEATURES ── -->
+<section class="lp-section reveal" id="features">
+  <div class="container">
+    <div class="section-head">
+      <h2>[ 产品功能 ]</h2>
+      <span class="label-muted">全渠道营销服务数智中台</span>
+    </div>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="card-label">01 / Store</div>
+        <h3>靓装店铺 & 积分商城</h3>
+        <p>模块化灵活调整，头图轮播吸睛，主页展示模块化搭配。积分商城支持星巴克代金券、饿了么红包、天猫满减券、停车权益等。</p>
+        <span class="tag">60%积分用于停车</span>
+      </div>
+      <div class="feature-card">
+        <div class="card-label">02 / Parking</div>
+        <h3>主流停车系统适配</h3>
+        <p>包含科拓、立方、宜泊等主流停车系统，提升会员消费粘性。</p>
+        <span class="tag">主流系统支持</span>
+      </div>
+      <div class="feature-card">
+        <div class="card-label">03 / Marketing</div>
+        <h3>营销中心 & 互动玩法</h3>
+        <p>会员专享券、生日礼、众筹游戏、垃圾回收打卡、周年庆集字领红包、直播带货，全渠道营销工具一站搞定。</p>
+        <span class="tag">可配置</span>
+      </div>
+      <div class="feature-card">
+        <div class="card-label">04 / Data</div>
+        <h3>会员数据 & 效果复盘</h3>
+        <p>会员数据支持活动复盘和效果反馈，消费频次、金额、偏好一目了然，用数据驱动营销决策。</p>
+        <span class="tag">实时数据</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── STEPS ── -->
+<section class="lp-section reveal" id="steps">
+  <div class="container">
+    <div class="section-head">
+      <h2>[ 接入流程 ]</h2>
+      <span class="label-muted">一般1周左右 · 0成本接入</span>
+    </div>
+    <div class="steps-grid">
+      <div class="step">
+        <div class="num">[01]</div>
+        <h3>开通主体</h3>
+        <p>配置微信小程序账户、微信支付及支付宝账户，服务中台配合甲方收集资料与账号申请。</p>
+        <div class="hint">周期: <span class="tag">2-3 天</span></div>
+      </div>
+      <div class="step">
+        <div class="num">[02]</div>
+        <h3>数据对接</h3>
+        <p>以0成本接入为主，对接支付数据回传接口，建立商圈独立会员数据库，无需改造商家软硬件。</p>
+        <div class="hint">周期: <span class="tag">3-4 天</span></div>
+      </div>
+      <div class="step">
+        <div class="num">[03]</div>
+        <h3>上线运营</h3>
+        <p>配置营销活动、积分规则、停车权益等，启动支付即积分，24×7远程或现场服务保障。</p>
+        <div class="hint">周期: <span class="tag">持续</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA ── -->
+<section class="lp-cta reveal" id="cta">
+  <div class="grid-bg" style="opacity:0.03;"></div>
+  <div class="container">
+    <h2>让商圈会员数据<br>成为你的资产。</h2>
+    <p>留下需求，我们会在 24 小时内与你对齐智慧商圈方案。</p>
+    <div class="cta-row">
+      <a href="mailto:xk103295870@gmail.com" class="cta-shell">
+        <span class="prompt"><span class="pf">$</span> 邮件咨询</span>
+        <span class="action">→</span>
+      </a>
+      <a href="https://work.weixin.qq.com/ca/cawcde3ad5b17ce10c" target="_blank" class="cta-shell">
+        <span class="prompt"><span class="pf">$</span> 企业微信</span>
+        <span class="action">→</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ── FOOTER ── -->
+<footer class="lp-footer">
+  <hr style="border:0; border-top:var(--hair) solid var(--c-border); margin:0;">
+  <div class="container">
+    <div class="row">
+      <div class="brand">W工作室 [v1.0]</div>
+      <nav>
+        <a href="landing-page-oxide.html#product">产品</a>
+        <a href="landing-page-oxide.html#how">流程</a>
+        <a href="landing-page-oxide.html#pricing">定价</a>
+        <a href="mailto:xk103295870@gmail.com">邮件</a>
+      </nav>
+    </div>
+    <div class="row">
+      <span class="prompt-line"><span class="pf">$</span> xk103295870@gmail.com</span>
+      <span class="prompt-line">© 2026 微诺技术工作室 · weinuo.work</span>
+    </div>
+  </div>
+</footer>
+
+<!-- Theme toggle -->
+<div class="theme-bar">
+  <button class="active" data-theme-btn="dark">Dark</button>
+  <button data-theme-btn="light">Light</button>
+</div>
+
+<script>
+  // Nav scroll
+  const navbar = document.getElementById('navbar');
+  const onScroll = () => { navbar.classList.toggle('scrolled', window.scrollY > 10); };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  // Scroll reveal
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('visible'); revealObserver.unobserve(entry.target); } });
+  }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+  // Theme toggle
+  document.querySelectorAll('.theme-bar button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const theme = btn.dataset.themeBtn;
+      document.documentElement.setAttribute('data-theme', theme);
+      document.querySelectorAll('.theme-bar button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      localStorage.setItem('wstudio-theme', theme);
+    });
+  });
+  const savedTheme = localStorage.getItem('wstudio-theme');
+  if (savedTheme) {
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    document.querySelectorAll('.theme-bar button').forEach(b => { b.classList.toggle('active', b.dataset.themeBtn === savedTheme); });
+  }
+
+  // Smooth scroll
+  document.querySelectorAll('a[href^="#"]').forEach(link => {
+    link.addEventListener('click', (e) => {
+      const href = link.getAttribute('href');
+      if (!href || href === '#') return;
+      const target = document.querySelector(href);
+      if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+    });
+  });
+</script>
+
+</body>
+</html>
