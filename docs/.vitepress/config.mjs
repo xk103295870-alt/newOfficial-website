@@ -63,9 +63,6 @@ export default defineConfig({
       }
     ],
     
-    socialLinks: [
-      { icon: 'github', link: 'https://github.com/xk103295870-alt/newOfficial-website' }
-    ],
     
     footer: {
       message: 'W工作室 · 智慧商圈数字化CRM',

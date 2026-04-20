@@ -12,6 +12,9 @@ hero:
     - theme: alt
       text: 产品概述
       link: /overview
+    - theme: alt
+      text: 在线客服
+      link: https://work.weixin.qq.com/ca/cawcde3ad5b17ce10c
 
 features:
   - title: 支付即积分
