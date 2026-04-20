@@ -1,7 +1,7 @@
 import { defineConfig } from 'vitepress'
 
 export default defineConfig({
-  title: 'W工作室 文档',
+  title: '文档',
   description: '智慧商圈数字化CRM运营方案文档',
   lang: 'zh-CN',
   
@@ -11,7 +11,7 @@ export default defineConfig({
     logo: '/logo.svg',
     
     nav: [
-      { text: '首页', link: 'https://weinuo.work' },
+      { text: '首页', link: 'https://www.weinuo.work/' },
       { text: '产品', link: '/overview' },
       { text: '接入', link: '/prerequisites' },
       { text: '联系', link: 'mailto:xk103295870@gmail.com' }
@@ -35,6 +35,26 @@ export default defineConfig({
         ]
       },
       {
+        text: '操作手册',
+        collapsed: false,
+        items: [
+          { text: '首页', link: '/manual#首页' },
+          { text: '小程序管理', link: '/manual#小程序管理' },
+          { text: '小程序页面装修', link: '/manual#小程序页面装修' },
+          { text: '商户管理', link: '/manual#商户管理' },
+          { text: '商品券管理', link: '/manual#商品券管理' },
+          { text: '会员停车管理', link: '/manual#会员停车管理' },
+          { text: '会员中心', link: '/manual#会员中心' },
+          { text: '会员营销活动', link: '/manual#会员营销活动' },
+          { text: '订单中心', link: '/manual#订单中心' },
+          { text: '公域管理', link: '/manual#公域管理' },
+          { text: '智慧营销', link: '/manual#智慧营销' },
+          { text: 'BI商业分析', link: '/manual#bi商业分析' },
+          { text: '门店核销', link: '/manual#门店核销' },
+          { text: '圈店流程', link: '/manual#圈店流程' }
+        ]
+      },
+      {
         text: 'Reference',
         items: [
           { text: '常见问题', link: '/faq' },
@@ -49,7 +69,7 @@ export default defineConfig({
     
     footer: {
       message: 'W工作室 · 智慧商圈数字化CRM',
-      copyright: '© 2026 微诺技术工作室 · weinuo.work'
+      copyright: '© 2026 微诺技术工作室 · www.weinuo.work'
     },
     
     search: {
