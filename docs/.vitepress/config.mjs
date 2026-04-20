@@ -4,6 +4,7 @@ export default defineConfig({
   title: '文档',
   description: '智慧商圈数字化CRM运营方案文档',
   lang: 'zh-CN',
+  base: '/docs/',
   
   appearance: 'dark',
   
