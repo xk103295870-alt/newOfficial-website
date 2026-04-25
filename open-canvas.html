@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Canvas Workbench — 本地优先的画布工作区。七种卡片自由排布，浏览器、Obsidian、API 三端一体。">
+<meta name="theme-color" content="#050505">
+<title>Canvas Workbench · 本地优先的画布工作区 | W工作室</title>
+<link rel="icon" type="image/svg+xml" href="./logo.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-dark:   #050505;
+    --text-dark: #F5F5F5;
+    --muted:     #757575;
+    --border:    #F5F5F5;
+    --accent:    #00FF66;
+    --alert:     #FF3B00;
+    --hair: 1px;
+    --sp-1: 8px; --sp-2: 16px; --sp-3: 24px; --sp-4: 32px; --sp-5: 48px; --sp-6: 64px; --sp-7: 96px; --sp-8: 128px;
+    --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  [data-theme="dark"] {
+    --c-bg: #050505; --c-text: #F5F5F5; --c-border: #F5F5F5; --c-muted: #757575; --c-accent: #00FF66;
+  }
+  [data-theme="light"] {
+    --c-bg: #FFFFFF; --c-text: #000000; --c-border: #000000; --c-muted: #757575; --c-accent: #00FF66;
+  }
+  * { box-sizing: border-box; }
+  *::selection { background: var(--accent); color: #000; }
+  html, body { margin:0; padding:0; background: var(--c-bg); color: var(--c-text); font-family: var(--font-mono); font-size:14px; line-height:1.55; font-weight:400; -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
+  a { color:inherit; text-decoration:none; }
+  .container { max-width:1200px; margin:0 auto; padding:0 var(--sp-4); }
+
+  /* ── NAV ── */
+  .lp-nav { border-bottom: var(--hair) solid var(--c-border); background: var(--c-bg); position:sticky; top:0; z-index:50; transition: backdrop-filter 200ms, background 200ms; }
+  .lp-nav.scrolled { backdrop-filter: blur(12px); background: rgba(5,5,5,0.85); }
+  [data-theme="light"] .lp-nav.scrolled { background: rgba(255,255,255,0.85); }
+  .lp-nav .container { display:flex; align-items:center; justify-content:space-between; height:64px; }
+  .lp-nav-left { display:flex; align-items:baseline; gap:var(--sp-2); }
+  .lp-wordmark { font-size:18px; font-weight:700; letter-spacing:-0.01em; }
+  .lp-version { font-size:11px; color:var(--c-muted); font-weight:500; }
+  .lp-nav-right { display:flex; align-items:center; gap:var(--sp-4); }
+  .lp-nav-right a { font-size:12px; font-weight:500; letter-spacing:0.02em; position:relative; padding:4px 0; }
+  .lp-nav-right a::after { content:''; position:absolute; bottom:-2px; left:0; width:0; height:1px; background:var(--accent); transition:width 0.3s ease; }
+  .lp-nav-right a:hover::after { width:100%; }
+  .nav-dropdown { position: relative; }
+  .nav-dropdown-toggle {
+    font-size: 12px; font-weight: 500; color: var(--c-text); letter-spacing: 0.02em;
+    position: relative; padding: 4px 0; cursor: pointer;
+    display: inline-flex; align-items: center; gap: 4px;
+    background: none; border: none; font-family: var(--font-mono);
+  }
+  .nav-dropdown-toggle::after { content: '▼'; font-size: 8px; opacity: 0.6; }
+  .nav-dropdown-menu {
+    position: absolute; top: calc(100% + 8px); left: 0;
+    background: var(--c-bg); border: var(--hair) solid var(--c-border);
+    min-width: 170px; opacity: 0; visibility: hidden;
+    transform: translateY(-4px);
+    transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+    z-index: 100;
+  }
+  .nav-dropdown:hover .nav-dropdown-menu,
+  .nav-dropdown.open .nav-dropdown-menu {
+    opacity: 1; visibility: visible; transform: translateY(0);
+  }
+  .nav-dropdown-menu a {
+    display: block; padding: 10px 16px; font-size: 12px; font-weight: 500;
+    letter-spacing: 0.02em; border-bottom: var(--hair) solid var(--c-border);
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+  .nav-dropdown-menu a:last-child { border-bottom: 0; }
+  .nav-dropdown-menu a:hover { background: var(--accent); color: #000; }
+
+  /* ── LANG SWITCH ── */
+  .lang-switch {
+    margin-left: 16px;
+    display: flex;
+    gap: 4px;
+  }
+  .lang-btn {
+    padding: 4px 8px;
+    border: 1px solid var(--c-border);
+    background: transparent;
+    color: var(--c-muted);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .lang-btn:hover { color: var(--c-text); }
+  .lang-btn.active {
+    background: var(--accent);
+    color: #000;
+    border-color: var(--accent);
+  }
+
+  /* ── HERO ── */
+  .lp-hero { position:relative; border-bottom:var(--hair) solid var(--c-border); padding: var(--sp-8) 0 var(--sp-7); overflow:hidden; }
+  .grid-bg { position:absolute; inset:0; pointer-events:none; background-image: linear-gradient(to right, rgba(255,255,255,0.04) var(--hair), transparent var(--hair)), linear-gradient(to bottom, rgba(255,255,255,0.04) var(--hair), transparent var(--hair)); background-size:48px 48px; z-index:0; }
+  [data-theme="light"] .grid-bg { background-image: linear-gradient(to right, rgba(0,0,0,0.06) var(--hair), transparent var(--hair)), linear-gradient(to bottom, rgba(0,0,0,0.06) var(--hair), transparent var(--hair)); }
+  .lp-hero .container { position:relative; z-index:2; display:grid; grid-template-columns: 1fr auto; gap:var(--sp-5); align-items:center; }
+  .hero-col-left { min-width:0; }
+  .hero-col-right { display:flex; flex-direction:column; gap:var(--sp-2); }
+  .hero-action { display:inline-flex; align-items:center; gap:6px; padding:8px 16px; border:var(--hair) solid var(--c-border); background:transparent; color:var(--c-text); font-family:var(--font-mono); font-size:12px; font-weight:500; letter-spacing:0.04em; text-transform:uppercase; cursor:pointer; text-decoration:none; transition:background 0.2s ease, color 0.2s ease, border-color 0.2s ease; white-space:nowrap; }
+  .hero-action:hover { background:var(--accent); color:#000; border-color:var(--accent); }
+  .hero-action:disabled { opacity:0.5; cursor:not-allowed; }
+  .hero-action:disabled:hover { background:transparent; color:var(--c-text); border-color:var(--c-border); }
+  @media (max-width: 880px) {
+    .lp-hero .container { grid-template-columns: 1fr; }
+    .hero-col-right { flex-direction:row; flex-wrap:wrap; margin-top:var(--sp-4); }
+  }
+  .hero-eyebrow { display:inline-flex; align-items:center; gap:var(--sp-2); padding:6px var(--sp-2); border:var(--hair) solid var(--c-border); margin-bottom:var(--sp-4); }
+  .hero-eyebrow .dot { width:8px; height:8px; background:var(--accent); display:inline-block; }
+  .hero-eyebrow span { font-size:11px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; }
+  .hero-title { font-weight:700; font-size: clamp(44px, 7vw, 96px); line-height:1.05; letter-spacing:-0.03em; margin:0 0 var(--sp-5) 0; max-width:18ch; opacity:0; animation: fadeInUp 0.8s var(--ease-out) forwards; animation-delay:0.2s; }
+  .hero-sub { font-size:16px; line-height:1.6; color:var(--c-text); max-width:60ch; margin:0 0 var(--sp-6) 0; }
+  .hero-sub .muted { color:var(--c-muted); }
+  .hero-stats { display:grid; grid-template-columns: repeat(3, 1fr); gap:0; border:var(--hair) solid var(--c-border); background: var(--c-bg); }
+  .hero-stat { padding: var(--sp-4) var(--sp-3); border-right: var(--hair) solid var(--c-border); }
+  .hero-stat:last-child { border-right:0; }
+  .hero-stat .num { font-size: clamp(32px, 4vw, 56px); font-weight:700; letter-spacing:-0.03em; line-height:1; margin-bottom:6px; }
+  .hero-stat .lbl { font-size:11px; color:var(--c-muted); letter-spacing:0.08em; text-transform:uppercase; }
+
+  /* ── SECTIONS ── */
+  .lp-section { border-bottom:var(--hair) solid var(--c-border); padding: var(--sp-8) 0; }
+  .section-head { display:flex; justify-content:space-between; align-items:baseline; margin-bottom:var(--sp-5); padding-bottom:var(--sp-3); border-bottom:var(--hair) solid var(--c-border); }
+  .section-head h2 { font-size:11px; font-weight:500; letter-spacing:0.1em; text-transform:uppercase; margin:0; }
+  .section-head .label-muted { font-size:11px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; color:var(--c-muted); }
+
+  /* ── PROBLEM ── */
+  .problem-grid { display:grid; grid-template-columns: 1fr 1fr; gap: var(--sp-5); }
+  .problem-card { border:var(--hair) solid var(--c-border); padding: var(--sp-5); }
+  .problem-card h3 { font-size:18px; font-weight:700; margin:0 0 var(--sp-3) 0; letter-spacing:-0.01em; }
+  .problem-card ol { margin:0; padding:0 0 0 18px; }
+  .problem-card li { font-size:13px; line-height:1.7; color:var(--c-muted); padding: 4px 0; }
+  .problem-card li::marker { color: var(--accent); }
+
+  /* ── FEATURES ── */
+  .feature-grid { display:grid; grid-template-columns: repeat(2, 1fr); gap:0; border:var(--hair) solid var(--c-border); }
+  .feature-card { padding: var(--sp-5); border-right:var(--hair) solid var(--c-border); border-bottom:var(--hair) solid var(--c-border); }
+  .feature-card:nth-child(2n) { border-right:0; }
+  .feature-card:nth-last-child(-n+2) { border-bottom:0; }
+  .feature-card .card-label { font-size:10px; font-weight:500; letter-spacing:0.1em; text-transform:uppercase; color:var(--c-muted); margin-bottom:var(--sp-2); }
+  .feature-card h3 { font-size:20px; font-weight:700; letter-spacing:-0.01em; margin:0 0 var(--sp-2) 0; }
+  .feature-card p { font-size:13px; color:var(--c-muted); line-height:1.65; margin:0 0 var(--sp-3) 0; }
+  .feature-card .tag { display:inline-block; padding:4px 8px; border:var(--hair) solid var(--c-border); font-size:10px; font-weight:500; letter-spacing:0.06em; text-transform:uppercase; color:var(--c-muted); }
+
+  /* ── FORMS ── */
+  .forms-grid { display:grid; grid-template-columns: repeat(4, 1fr); gap:0; border:var(--hair) solid var(--c-border); }
+  .form-card { padding: var(--sp-4) var(--sp-3); border-right:var(--hair) solid var(--c-border); border-bottom:var(--hair) solid var(--c-border); transition: background 0.3s ease; }
+  .form-card:nth-child(4n) { border-right:0; }
+  .form-card:nth-last-child(-n+4) { border-bottom:0; }
+  .form-card:hover { background: rgba(0,255,102,0.03); }
+  .form-card:hover .form-icon { color: var(--accent); }
+  .form-icon { font-size:24px; margin-bottom:var(--sp-2); transition: color 0.3s ease; }
+  .form-card h4 { font-size:14px; font-weight:700; margin:0 0 var(--sp-1) 0; }
+  .form-card p { font-size:12px; color:var(--c-muted); line-height:1.6; margin:0; }
+
+  /* ── DEPLOY ── */
+  .deploy-flow { display:grid; grid-template-columns: repeat(3, 1fr); gap:0; border:var(--hair) solid var(--c-border); }
+  .deploy-step { padding: var(--sp-4) var(--sp-3); border-right:var(--hair) solid var(--c-border); }
+  .deploy-step:last-child { border-right:0; }
+  .deploy-step .num { font-size:11px; font-weight:500; color:var(--c-accent); letter-spacing:0.1em; margin-bottom:var(--sp-2); }
+  .deploy-step h4 { font-size:16px; font-weight:700; margin:0 0 var(--sp-2) 0; }
+  .deploy-step p { font-size:13px; color:var(--c-muted); line-height:1.6; margin:0; }
+
+  /* ── STEPS ── */
+  .steps-grid { display:grid; grid-template-columns: repeat(4, 1fr); gap:0; border:var(--hair) solid var(--c-border); }
+  .step { padding: var(--sp-5) var(--sp-3); border-right:var(--hair) solid var(--c-border); display:flex; flex-direction:column; }
+  .step:last-child { border-right:0; }
+  .step .num { font-size:11px; font-weight:500; color:var(--c-accent); letter-spacing:0.1em; margin-bottom:var(--sp-3); }
+  .step h3 { font-size:18px; font-weight:700; margin:0 0 var(--sp-2) 0; }
+  .step p { font-size:13px; line-height:1.65; color:var(--c-muted); margin:0 0 var(--sp-3) 0; }
+  .step .hint { margin-top:auto; font-size:11px; color:var(--c-muted); letter-spacing:0.04em; border-top:var(--hair) solid var(--c-border); padding-top:var(--sp-2); }
+  .step .hint .tag { color:var(--c-text); font-weight:500; }
+
+  /* ── CTA ── */
+  .lp-cta { border-bottom:var(--hair) solid var(--c-border); padding: var(--sp-8) 0; text-align:center; position:relative; overflow:hidden; }
+  .lp-cta .container { position:relative; z-index:2; }
+  .lp-cta h2 { font-weight:700; font-size: clamp(40px, 7vw, 96px); line-height:1.2; letter-spacing:-0.03em; margin:0 0 var(--sp-4) 0; }
+  .lp-cta p { font-size:16px; color:var(--c-muted); max-width:56ch; margin:0 auto var(--sp-5); line-height:1.5; }
+  .cta-row { display:flex; justify-content:center; align-items:center; gap:var(--sp-3); flex-wrap:wrap; }
+  .cta-shell { display:inline-flex; align-items:stretch; border:var(--hair) solid var(--c-border); background:var(--c-bg); height:48px; }
+  .cta-shell .prompt { display:flex; align-items:center; padding:0 var(--sp-3); font-size:13px; font-weight:500; }
+  .cta-shell .prompt .pf { color:var(--accent); margin-right:6px; }
+  .cta-shell .action { display:flex; align-items:center; justify-content:center; padding:0 var(--sp-3); background:var(--accent); color:#000; border:0; font-family:var(--font-mono); font-size:11px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; cursor:pointer; }
+
+  /* ── FOOTER ── */
+  .lp-footer { padding: var(--sp-6) 0 var(--sp-5); }
+  .lp-footer .container { display:grid; gap:var(--sp-5); }
+  .lp-footer .row { display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap; gap:var(--sp-3); }
+  .lp-footer .brand { font-size:16px; font-weight:700; }
+  .lp-footer nav { display:flex; gap:var(--sp-4); }
+  .lp-footer nav a { font-size:12px; font-weight:500; }
+  .lp-footer .prompt-line { font-size:12px; color:var(--c-muted); }
+  .lp-footer .prompt-line .pf { color:var(--accent); }
+
+  /* ── THEME TOGGLE ── */
+  .theme-bar { position:fixed; bottom:24px; left:50%; transform:translateX(-50%); display:flex; gap:0; background:var(--c-bg); border:var(--hair) solid var(--c-border); z-index:1000; }
+  .theme-bar button { padding:8px 16px; border:0; background:transparent; color:var(--c-muted); font-family:var(--font-mono); font-size:11px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; cursor:pointer; }
+  .theme-bar button + button { border-left:var(--hair) solid var(--c-border); }
+  .theme-bar button.active { background:var(--accent); color:#000; }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeInUp { from { opacity:0; transform:translateY(30px); } to { opacity:1; transform:translateY(0); } }
+  .reveal { opacity:0; transform:translateY(30px); transition: opacity 0.6s var(--ease-out), transform 0.6s var(--ease-out); }
+  .reveal.visible { opacity:1; transform:translateY(0); }
+
+  /* ── MOBILE ── */
+  @media (max-width: 880px) {
+    .hero-stats { grid-template-columns: 1fr; }
+    .hero-stat { border-right:0; border-bottom:var(--hair) solid var(--c-border); }
+    .hero-stat:last-child { border-bottom:0; }
+    .problem-grid { grid-template-columns: 1fr; }
+    .feature-grid { grid-template-columns: 1fr; }
+    .feature-card { border-right:0; }
+    .forms-grid { grid-template-columns: repeat(2, 1fr); }
+    .form-card:nth-child(4n) { border-right:var(--hair) solid var(--c-border); }
+    .form-card:nth-child(2n) { border-right:0; }
+    .deploy-flow { grid-template-columns: 1fr; }
+    .deploy-step { border-right:0; border-bottom:var(--hair) solid var(--c-border); }
+    .deploy-step:last-child { border-bottom:0; }
+    .steps-grid { grid-template-columns: 1fr; }
+    .step { border-right:0; border-bottom:var(--hair) solid var(--c-border); }
+    .step:last-child { border-bottom:0; }
+    .lp-footer .row { flex-direction:column; align-items:flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav class="lp-nav" id="navbar">
+  <div class="container">
+    <div class="lp-nav-left">
+      <a href="index.html" class="lp-wordmark">W工作室</a>
+      <span class="lp-version">[1.0.0]</span>
+    </div>
+    <div class="lp-nav-right">
+      <div class="nav-dropdown">
+        <button class="nav-dropdown-toggle" data-i18n="nav.product">产品</button>
+        <div class="nav-dropdown-menu">
+          <a href="index.html#product" data-i18n="nav.aiProducts">AI 产品</a>
+          <a href="smart-business-district.html" data-i18n="nav.bizMember">商业会员系统</a>
+          <a href="open-canvas.html" data-i18n="nav.canvas">Canvas Workbench</a>
+        </div>
+      </div>
+      <a href="#features" data-i18n="nav.features">功能</a>
+      <a href="#deploy" data-i18n="nav.deploy">部署</a>
+      <a href="#scenes" data-i18n="nav.scenes">场景</a>
+      <a href="#cta" data-i18n="nav.contact">联系</a>
+    </div>
+    <div class="lang-switch" role="group" aria-label="语言切换">
+      <button class="lang-btn active" data-lang="zh" aria-label="中文">中</button>
+      <button class="lang-btn" data-lang="en" aria-label="English">EN</button>
+      <button class="lang-btn" data-lang="vi" aria-label="Tiếng Việt">VI</button>
+    </div>
+  </div>
+</nav>
+
+<main>
+
+<!-- ── HERO ── -->
+<section class="lp-hero">
+  <div class="grid-bg"></div>
+  <div class="container">
+    <div class="hero-col-left">
+      <div class="hero-eyebrow">
+        <span class="dot"></span>
+        <span data-i18n="hero.eyebrow">Canvas Workbench · 本地优先</span>
+      </div>
+      <h1 class="hero-title" data-i18n="hero.title">画布即<br>工作台</h1>
+      <p class="hero-sub" data-i18n="hero.sub">
+        把你的笔记、待办、日程和媒体文件，自由摆放在一张无限画布上。
+        <span class="muted">七种卡片、三端一体、数据完全本地存储。无需注册，开箱即用。</span>
+      </p>
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <div class="num">7</div>
+          <div class="lbl" data-i18n="hero.stat1">种卡片类型</div>
+        </div>
+        <div class="hero-stat">
+          <div class="num">3</div>
+          <div class="lbl" data-i18n="hero.stat2">种运行形态</div>
+        </div>
+        <div class="hero-stat">
+          <div class="num">0</div>
+          <div class="lbl" data-i18n="hero.stat3">登录门槛</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-col-right">
+      <a href="https://github.com/xk103295870-alt/Canvas-Workbench" target="_blank" class="hero-action" data-i18n="hero.github">GitHub →</a>
+      <a href="https://obsidian.md/zh/" target="_blank" class="hero-action" data-i18n="hero.obsidian">下载 Obsidian →</a>
+      <button class="hero-action" disabled data-i18n="hero.plugin">下载插件</button>
+    </div>
+  </div>
+</section>
+
+<!-- ── PROBLEM ── -->
+<section class="lp-section reveal" id="problem">
+  <div class="container">
+    <div class="section-head">
+      <h2 data-i18n="problem.heading">[ 为什么需要 ]</h2>
+      <span class="label-muted" data-i18n="problem.subtitle">信息碎片化 · 工具割裂 · 数据隐私</span>
+    </div>
+    <div class="problem-grid">
+      <div class="problem-card">
+        <h3 data-i18n="problem.card1.title">信息分散在多个工具</h3>
+        <ol>
+          <li data-i18n="problem.card1.item1">笔记在 Notion，待办在 Todoist，日程在日历</li>
+          <li data-i18n="problem.card1.item2">灵感、图片、PDF 散落在不同文件夹</li>
+          <li data-i18n="problem.card1.item3">切换成本高，难以形成全局视图</li>
+        </ol>
+      </div>
+      <div class="problem-card">
+        <h3 data-i18n="problem.card2.title">数据不在自己手中</h3>
+        <ol>
+          <li data-i18n="problem.card2.item1">云服务依赖网络，断线即不可用</li>
+          <li data-i18n="problem.card2.item2">隐私数据存储在第三方服务器</li>
+          <li data-i18n="problem.card2.item3">导出困难，迁移成本高昂</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FEATURES ── -->
+<section class="lp-section reveal" id="features">
+  <div class="container">
+    <div class="section-head">
+      <h2 data-i18n="features.heading">[ 七种卡片 ]</h2>
+      <span class="label-muted" data-i18n="features.subtitle">自由组合 · 随意排布 · 拖拽即用</span>
+    </div>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="card-label">01 / Note</div>
+        <h3 data-i18n="features.note.title">Markdown 便利贴</h3>
+        <p data-i18n="features.note.desc">支持 Markdown 格式的自由笔记卡片，可重复创建、任意缩放。让碎片化灵感有处安放。</p>
+        <span class="tag" data-i18n="features.note.tag">可缩放</span>
+      </div>
+      <div class="feature-card">
+        <div class="card-label">02 / Todo</div>
+        <h3 data-i18n="features.todo.title">三栏看板</h3>
+        <p data-i18n="features.todo.desc">待办 / 进行中 / 已完成三栏看板，支持拖拽改状态。任务进度一目了然。</p>
+        <span class="tag" data-i18n="features.todo.tag">拖拽状态</span>
+      </div>
+      <div class="feature-card">
+        <div class="card-label">03 / Calendar</div>
+        <h3 data-i18n="features.calendar.title">月视图画布日历</h3>
+        <p data-i18n="features.calendar.desc">月视图/周视图切换，支持全天/时段日程，可拖拽改期。画布上的时间管理系统。</p>
+        <span class="tag" data-i18n="features.calendar.tag">拖拽改期</span>
+      </div>
+      <div class="feature-card">
+        <div class="card-label">04 / Media</div>
+        <h3 data-i18n="features.media.title">图片 · 视频 · PDF</h3>
+        <p data-i18n="features.media.desc">直接拖放 PNG/JPG/GIF/WebP/MP4/MOV/PDF 到画布，即刻生成媒体卡片。支持本地服务端存储。</p>
+        <span class="tag" data-i18n="features.media.tag">拖放上传</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FORMS ── -->
+<section class="lp-section reveal">
+  <div class="container">
+    <div class="section-head">
+      <h2 data-i18n="forms.heading">[ 更多卡片 ]</h2>
+      <span class="label-muted" data-i18n="forms.subtitle">覆盖工作与生活的全场景</span>
+    </div>
+    <div class="forms-grid">
+      <div class="form-card">
+        <div class="form-icon">⚡</div>
+        <h4 data-i18n="forms.hint.title">Hint 提示卡</h4>
+        <p data-i18n="forms.hint.desc">快捷操作指引，展示支持的格式与操作方式</p>
+      </div>
+      <div class="form-card">
+        <div class="form-icon">🌙</div>
+        <h4 data-i18n="forms.glass.title">Liquid Glass</h4>
+        <p data-i18n="forms.glass.desc">Apple 风格液体玻璃主题，视觉体验出色</p>
+      </div>
+      <div class="form-card">
+        <div class="form-icon">🔒</div>
+        <h4 data-i18n="forms.db.title">IndexedDB</h4>
+        <p data-i18n="forms.db.desc">浏览器端本地持久化存储，数据不上传</p>
+      </div>
+      <div class="form-card">
+        <div class="form-icon">🌐</div>
+        <h4 data-i18n="forms.lang.title">双语支持</h4>
+        <p data-i18n="forms.lang.desc">中文 / 英文一键切换，界面自适应</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── DEPLOY ── -->
+<section class="lp-section reveal" id="deploy">
+  <div class="container">
+    <div class="section-head">
+      <h2 data-i18n="deploy.heading">[ 三端一体 ]</h2>
+      <span class="label-muted" data-i18n="deploy.subtitle">浏览器 · Obsidian · API 同一套工作区</span>
+    </div>
+    <div class="deploy-flow">
+      <div class="deploy-step">
+        <div class="num" data-i18n="deploy.s1.num">[01] 浏览器应用</div>
+        <h4 data-i18n="deploy.s1.title">独立 Web 应用</h4>
+        <p data-i18n="deploy.s1.desc">一条命令启动本地服务，打开浏览器即可使用。6000×4000 无限画布，自由拖拽与缩放。</p>
+      </div>
+      <div class="deploy-step">
+        <div class="num" data-i18n="deploy.s2.num">[02] Obsidian 插件</div>
+        <h4 data-i18n="deploy.s2.title">深度融入知识管理</h4>
+        <p data-i18n="deploy.s2.desc">作为 Obsidian 原生插件运行，与你的笔记库无缝衔接。在知识图谱旁管理待办和日程。</p>
+      </div>
+      <div class="deploy-step">
+        <div class="num" data-i18n="deploy.s3.num">[03] API 服务</div>
+        <h4 data-i18n="deploy.s3.title">程序化操作画布</h4>
+        <p data-i18n="deploy.s3.desc">内置 RESTful API 和 CLI 工具链，支持脚本、AI Agent 自动创建卡片、追加笔记、查询状态。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── STEPS ── -->
+<section class="lp-section reveal" id="scenes">
+  <div class="container">
+    <div class="section-head">
+      <h2 data-i18n="scenes.heading">[ 使用场景 ]</h2>
+      <span class="label-muted" data-i18n="scenes.subtitle">为不同角色设计的工作方式</span>
+    </div>
+    <div class="steps-grid">
+      <div class="step">
+        <div class="num">[01]</div>
+        <h3 data-i18n="scenes.s1.title">每日工作台</h3>
+        <p data-i18n="scenes.s1.desc">打开画布，看到今天的待办、日程和灵感笔记。一张画布掌控全天工作节奏。</p>
+        <div class="hint"><span data-i18n="scenes.role">角色:</span> <span class="tag" data-i18n="scenes.s1.role">个人用户</span></div>
+      </div>
+      <div class="step">
+        <div class="num">[02]</div>
+        <h3 data-i18n="scenes.s2.title">项目管理</h3>
+        <p data-i18n="scenes.s2.desc">为每个项目创建一个 Grid，汇集相关笔记、资料和任务。多画布切换，井井有条。</p>
+        <div class="hint"><span data-i18n="scenes.role">角色:</span> <span class="tag" data-i18n="scenes.s2.role">团队负责人</span></div>
+      </div>
+      <div class="step">
+        <div class="num">[03]</div>
+        <h3 data-i18n="scenes.s3.title">灵感收集</h3>
+        <p data-i18n="scenes.s3.desc">在浏览器中快速记录灵感，回到 Obsidian 中深度整理。拖入图片和 PDF，资料一目了然。</p>
+        <div class="hint"><span data-i18n="scenes.role">角色:</span> <span class="tag" data-i18n="scenes.s3.role">创作者</span></div>
+      </div>
+      <div class="step">
+        <div class="num">[04]</div>
+        <h3 data-i18n="scenes.s4.title">AI 自动化</h3>
+        <p data-i18n="scenes.s4.desc">通过 API 让 Agent 自动为你创建待办、追加笔记。预留 AI 联动接口，扩展无上限。</p>
+        <div class="hint"><span data-i18n="scenes.role">角色:</span> <span class="tag" data-i18n="scenes.s4.role">开发者</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA ── -->
+<section class="lp-cta reveal" id="cta">
+  <div class="grid-bg" style="opacity:0.03;"></div>
+  <div class="container">
+    <h2 data-i18n="cta.title">让画布成为<br>你的工作台。</h2>
+    <p data-i18n="cta.sub">本地优先，数据归你。一条命令即可启动，无需注册。</p>
+    <div class="cta-row">
+      <a href="mailto:xk103295870@gmail.com?subject=Canvas Workbench 咨询" class="cta-shell">
+        <span class="prompt"><span class="pf">$</span> <span data-i18n="cta.email">邮件咨询</span></span>
+        <span class="action">→</span>
+      </a>
+      <a href="https://work.weixin.qq.com/ca/cawcde3ad5b17ce10c" target="_blank" class="cta-shell">
+        <span class="prompt"><span class="pf">$</span> <span data-i18n="cta.wechat">企业微信</span></span>
+        <span class="action">→</span>
+      </a>
+      <a href="https://github.com/xk103295870-alt/Canvas-Workbench" target="_blank" class="cta-shell">
+        <span class="prompt"><span class="pf">$</span> <span data-i18n="cta.github">GitHub</span></span>
+        <span class="action">→</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ── FOOTER ── -->
+<footer class="lp-footer">
+  <hr style="border:0; border-top:var(--hair) solid var(--c-border); margin:0;">
+  <div class="container">
+    <div class="row">
+      <div class="brand">W工作室 [v1.0]</div>
+      <nav>
+        <a href="index.html" data-i18n="footer.home">首页</a>
+        <a href="smart-business-district.html" data-i18n="footer.biz">商业会员</a>
+        <a href="open-canvas.html" data-i18n="footer.canvas">Canvas Workbench</a>
+        <a href="mailto:xk103295870@gmail.com" data-i18n="footer.email">邮件</a>
+      </nav>
+    </div>
+    <div class="row">
+      <span class="prompt-line"><span class="pf">$</span> xk103295870@gmail.com</span>
+      <span class="prompt-line">© 2026 微诺技术工作室 · weinuo.work</span>
+    </div>
+  </div>
+</footer>
+
+<!-- Theme toggle -->
+<div class="theme-bar">
+  <button class="active" data-theme-btn="dark">Dark</button>
+  <button data-theme-btn="light">Light</button>
+</div>
+
+<script>
+  // Nav scroll
+  const navbar = document.getElementById('navbar');
+  const onScroll = () => { navbar.classList.toggle('scrolled', window.scrollY > 10); };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  // Scroll reveal
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('visible'); revealObserver.unobserve(entry.target); } });
+  }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+  // Theme toggle
+  document.querySelectorAll('.theme-bar button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const theme = btn.dataset.themeBtn;
+      document.documentElement.setAttribute('data-theme', theme);
+      document.querySelectorAll('.theme-bar button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      localStorage.setItem('wstudio-theme', theme);
+    });
+  });
+  const savedTheme = localStorage.getItem('wstudio-theme');
+  if (savedTheme) {
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    document.querySelectorAll('.theme-bar button').forEach(b => { b.classList.toggle('active', b.dataset.themeBtn === savedTheme); });
+  }
+
+  // Smooth scroll
+  document.querySelectorAll('a[href^="#"]').forEach(link => {
+    link.addEventListener('click', (e) => {
+      const href = link.getAttribute('href');
+      if (!href || href === '#') return;
+      const target = document.querySelector(href);
+      if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+    });
+  });
+
+  // ── Language Switcher ──
+  const translations = {
+    zh: {
+      'nav.product': '产品',
+      'nav.aiProducts': 'AI 产品',
+      'nav.bizMember': '商业会员系统',
+      'nav.canvas': '画布工作台',
+      'nav.features': '功能',
+      'nav.deploy': '部署',
+      'nav.scenes': '场景',
+      'nav.contact': '联系',
+      'hero.eyebrow': '画布工作台 · 本地优先',
+      'hero.title': '画布即<br>工作台',
+      'hero.sub': '把你的笔记、待办、日程和媒体文件，自由摆放在一张无限画布上。<span class="muted">七种卡片、三端一体、数据完全本地存储。无需注册，开箱即用。</span>',
+      'hero.stat1': '种卡片类型',
+      'hero.stat2': '种运行形态',
+      'hero.stat3': '登录门槛',
+      'hero.github': 'GitHub →',
+      'hero.obsidian': '下载 Obsidian →',
+      'hero.plugin': '下载插件',
+      'problem.heading': '[ 为什么需要 ]',
+      'problem.subtitle': '信息碎片化 · 工具割裂 · 数据隐私',
+      'problem.card1.title': '信息分散在多个工具',
+      'problem.card1.item1': '笔记在 Notion，待办在 Todoist，日程在日历',
+      'problem.card1.item2': '灵感、图片、PDF 散落在不同文件夹',
+      'problem.card1.item3': '切换成本高，难以形成全局视图',
+      'problem.card2.title': '数据不在自己手中',
+      'problem.card2.item1': '云服务依赖网络，断线即不可用',
+      'problem.card2.item2': '隐私数据存储在第三方服务器',
+      'problem.card2.item3': '导出困难，迁移成本高昂',
+      'features.heading': '[ 七种卡片 ]',
+      'features.subtitle': '自由组合 · 随意排布 · 拖拽即用',
+      'features.note.title': 'Markdown 便利贴',
+      'features.note.desc': '支持 Markdown 格式的自由笔记卡片，可重复创建、任意缩放。让碎片化灵感有处安放。',
+      'features.note.tag': '可缩放',
+      'features.todo.title': '三栏看板',
+      'features.todo.desc': '待办 / 进行中 / 已完成三栏看板，支持拖拽改状态。任务进度一目了然。',
+      'features.todo.tag': '拖拽状态',
+      'features.calendar.title': '月视图画布日历',
+      'features.calendar.desc': '月视图/周视图切换，支持全天/时段日程，可拖拽改期。画布上的时间管理系统。',
+      'features.calendar.tag': '拖拽改期',
+      'features.media.title': '图片 · 视频 · PDF',
+      'features.media.desc': '直接拖放 PNG/JPG/GIF/WebP/MP4/MOV/PDF 到画布，即刻生成媒体卡片。支持本地服务端存储。',
+      'features.media.tag': '拖放上传',
+      'forms.heading': '[ 更多卡片 ]',
+      'forms.subtitle': '覆盖工作与生活的全场景',
+      'forms.hint.title': 'Hint 提示卡',
+      'forms.hint.desc': '快捷操作指引，展示支持的格式与操作方式',
+      'forms.glass.title': 'Liquid Glass',
+      'forms.glass.desc': 'Apple 风格液体玻璃主题，视觉体验出色',
+      'forms.db.title': 'IndexedDB',
+      'forms.db.desc': '浏览器端本地持久化存储，数据不上传',
+      'forms.lang.title': '双语支持',
+      'forms.lang.desc': '中文 / 英文一键切换，界面自适应',
+      'deploy.heading': '[ 三端一体 ]',
+      'deploy.subtitle': '浏览器 · Obsidian · API 同一套工作区',
+      'deploy.s1.num': '[01] 浏览器应用',
+      'deploy.s1.title': '独立 Web 应用',
+      'deploy.s1.desc': '一条命令启动本地服务，打开浏览器即可使用。6000×4000 无限画布，自由拖拽与缩放。',
+      'deploy.s2.num': '[02] Obsidian 插件',
+      'deploy.s2.title': '深度融入知识管理',
+      'deploy.s2.desc': '作为 Obsidian 原生插件运行，与你的笔记库无缝衔接。在知识图谱旁管理待办和日程。',
+      'deploy.s3.num': '[03] API 服务',
+      'deploy.s3.title': '程序化操作画布',
+      'deploy.s3.desc': '内置 RESTful API 和 CLI 工具链，支持脚本、AI Agent 自动创建卡片、追加笔记、查询状态。',
+      'scenes.heading': '[ 使用场景 ]',
+      'scenes.subtitle': '为不同角色设计的工作方式',
+      'scenes.role': '角色:',
+      'scenes.s1.title': '每日工作台',
+      'scenes.s1.desc': '打开画布，看到今天的待办、日程和灵感笔记。一张画布掌控全天工作节奏。',
+      'scenes.s1.role': '个人用户',
+      'scenes.s2.title': '项目管理',
+      'scenes.s2.desc': '为每个项目创建一个 Grid，汇集相关笔记、资料和任务。多画布切换，井井有条。',
+      'scenes.s2.role': '团队负责人',
+      'scenes.s3.title': '灵感收集',
+      'scenes.s3.desc': '在浏览器中快速记录灵感，回到 Obsidian 中深度整理。拖入图片和 PDF，资料一目了然。',
+      'scenes.s3.role': '创作者',
+      'scenes.s4.title': 'AI 自动化',
+      'scenes.s4.desc': '通过 API 让 Agent 自动为你创建待办、追加笔记。预留 AI 联动接口，扩展无上限。',
+      'scenes.s4.role': '开发者',
+      'cta.title': '让画布成为<br>你的工作台。',
+      'cta.sub': '本地优先，数据归你。一条命令即可启动，无需注册。',
+      'cta.email': '邮件咨询',
+      'cta.wechat': '企业微信',
+      'cta.github': 'GitHub',
+      'footer.home': '首页',
+      'footer.biz': '商业会员',
+      'footer.canvas': '画布工作台',
+      'footer.email': '邮件'
+    },
+    en: {
+      'nav.product': 'Products',
+      'nav.aiProducts': 'AI Products',
+      'nav.bizMember': 'Business Member',
+      'nav.canvas': 'Canvas Workbench',
+      'nav.features': 'Features',
+      'nav.deploy': 'Deploy',
+      'nav.scenes': 'Scenes',
+      'nav.contact': 'Contact',
+      'hero.eyebrow': 'Canvas Workbench · Local-First',
+      'hero.title': 'Canvas is<br>Your Workspace',
+      'hero.sub': 'Freely arrange your notes, todos, schedules and media on an infinite canvas.<span class="muted">Seven card types, three deployment forms, fully local storage. No signup required.</span>',
+      'hero.stat1': 'Card Types',
+      'hero.stat2': 'Deploy Forms',
+      'hero.stat3': 'Login Barrier',
+      'hero.github': 'GitHub →',
+      'hero.obsidian': 'Download Obsidian →',
+      'hero.plugin': 'Download Plugin',
+      'problem.heading': '[ Why You Need It ]',
+      'problem.subtitle': 'Fragmented Info · Tool Silos · Data Privacy',
+      'problem.card1.title': 'Scattered Across Tools',
+      'problem.card1.item1': 'Notes in Notion, todos in Todoist, schedules in Calendar',
+      'problem.card1.item2': 'Ideas, images, PDFs scattered in different folders',
+      'problem.card1.item3': 'High switching cost, hard to form a global view',
+      'problem.card2.title': 'Data Not in Your Hands',
+      'problem.card2.item1': 'Cloud services depend on network, unavailable when offline',
+      'problem.card2.item2': 'Private data stored on third-party servers',
+      'problem.card2.item3': 'Difficult to export, high migration cost',
+      'features.heading': '[ Seven Card Types ]',
+      'features.subtitle': 'Free Combination · Flexible Layout · Drag & Drop',
+      'features.note.title': 'Markdown Sticky Note',
+      'features.note.desc': 'Free-form note cards with Markdown support, repeatable and resizable. A home for fragmented ideas.',
+      'features.note.tag': 'Resizable',
+      'features.todo.title': 'Three-Column Board',
+      'features.todo.desc': 'Todo / Doing / Done kanban board with drag-to-change-status. Task progress at a glance.',
+      'features.todo.tag': 'Drag Status',
+      'features.calendar.title': 'Canvas Calendar',
+      'features.calendar.desc': 'Monthly / weekly views with all-day and time-slot events. Drag to reschedule. Time management on canvas.',
+      'features.calendar.tag': 'Drag Reschedule',
+      'features.media.title': 'Image · Video · PDF',
+      'features.media.desc': 'Drag and drop PNG/JPG/GIF/WebP/MP4/MOV/PDF to canvas to instantly generate media cards. Local server storage supported.',
+      'features.media.tag': 'Drag Upload',
+      'forms.heading': '[ More Cards ]',
+      'forms.subtitle': 'Covering All Work & Life Scenarios',
+      'forms.hint.title': 'Hint Card',
+      'forms.hint.desc': 'Quick operation guide showing supported formats and actions',
+      'forms.glass.title': 'Liquid Glass',
+      'forms.glass.desc': 'Apple-style liquid glass theme for outstanding visual experience',
+      'forms.db.title': 'IndexedDB',
+      'forms.db.desc': 'Browser-side local persistent storage, data never uploaded',
+      'forms.lang.title': 'Bilingual',
+      'forms.lang.desc': 'One-click switch between Chinese and English, adaptive UI',
+      'deploy.heading': '[ Three-in-One ]',
+      'deploy.subtitle': 'Browser · Obsidian · API Same Workspace',
+      'deploy.s1.num': '[01] Browser App',
+      'deploy.s1.title': 'Standalone Web App',
+      'deploy.s1.desc': 'One command to start local server, open browser and go. 6000×4000 infinite canvas with free drag and zoom.',
+      'deploy.s2.num': '[02] Obsidian Plugin',
+      'deploy.s2.title': 'Deep Knowledge Integration',
+      'deploy.s2.desc': 'Run as native Obsidian plugin, seamlessly connected to your vault. Manage todos and schedules alongside knowledge graphs.',
+      'deploy.s3.num': '[03] API Service',
+      'deploy.s3.title': 'Programmatic Canvas',
+      'deploy.s3.desc': 'Built-in RESTful API and CLI toolchain. Support scripts and AI Agents to auto-create cards, append notes, query status.',
+      'scenes.heading': '[ Use Cases ]',
+      'scenes.subtitle': 'Designed for Different Roles',
+      'scenes.role': 'Role:',
+      'scenes.s1.title': 'Daily Workspace',
+      'scenes.s1.desc': 'Open the canvas and see today\'s todos, schedule and ideas. One canvas controls the whole day.',
+      'scenes.s1.role': 'Individual',
+      'scenes.s2.title': 'Project Management',
+      'scenes.s2.desc': 'Create a Grid for each project, gathering related notes, materials and tasks. Switch between canvases seamlessly.',
+      'scenes.s2.role': 'Team Lead',
+      'scenes.s3.title': 'Idea Collection',
+      'scenes.s3.desc': 'Quickly capture ideas in browser, then deeply organize in Obsidian. Drag in images and PDFs, everything in sight.',
+      'scenes.s3.role': 'Creator',
+      'scenes.s4.title': 'AI Automation',
+      'scenes.s4.desc': 'Let Agents auto-create todos and append notes via API. Reserved AI integration interfaces for unlimited extension.',
+      'scenes.s4.role': 'Developer',
+      'cta.title': 'Make the Canvas<br>Your Workspace.',
+      'cta.sub': 'Local-first, your data belongs to you. One command to start, no registration needed.',
+      'cta.email': 'Email Us',
+      'cta.wechat': 'WeChat Work',
+      'cta.github': 'GitHub',
+      'footer.home': 'Home',
+      'footer.biz': 'Business',
+      'footer.canvas': 'Canvas Workbench',
+      'footer.email': 'Email'
+    },
+    vi: {
+      'nav.product': 'Sản phẩm',
+      'nav.aiProducts': 'AI Sản phẩm',
+      'nav.bizMember': 'Hệ thống thành viên',
+      'nav.canvas': 'Bàn làm việc Canvas',
+      'nav.features': 'Tính năng',
+      'nav.deploy': 'Triển khai',
+      'nav.scenes': 'Kịch bản',
+      'nav.contact': 'Liên hệ',
+      'hero.eyebrow': 'Bàn làm việc Canvas · Ưu tiên local',
+      'hero.title': 'Canvas là<br>Không gian làm việc',
+      'hero.sub': 'Sắp xếp tự do ghi chú, việc cần làm, lịch hẹn và tệp media trên một canvas vô hạn.<span class="muted">Bảy loại thẻ, ba dạng triển khai, dữ liệu lưu trữ hoàn toàn local. Không cần đăng ký.</span>',
+      'hero.stat1': 'Loại thẻ',
+      'hero.stat2': 'Dạng triển khai',
+      'hero.stat3': 'Rào cản đăng nhập',
+      'hero.github': 'GitHub →',
+      'hero.obsidian': 'Tải Obsidian →',
+      'hero.plugin': 'Tải Plugin',
+      'problem.heading': '[ Tại sao cần ]',
+      'problem.subtitle': 'Thông tin phân mảnh · Công cụ rời rạc · Quyền riêng tư',
+      'problem.card1.title': 'Thông tin phân tán',
+      'problem.card1.item1': 'Ghi chú ở Notion, việc cần làm ở Todoist, lịch ở Calendar',
+      'problem.card1.item2': 'Ý tưởng, hình ảnh, PDF rải rác trong các thư mục',
+      'problem.card1.item3': 'Chi phí chuyển đổi cao, khó có cái nhìn tổng thể',
+      'problem.card2.title': 'Dữ liệu không thuộc về bạn',
+      'problem.card2.item1': 'Dịch vụ đám mây phụ thuộc mạng, mất kết nối là không dùng được',
+      'problem.card2.item2': 'Dữ liệu riêng tư lưu trên máy chủ bên thứ ba',
+      'problem.card2.item3': 'Khó xuất, chi phí di chuyển cao',
+      'features.heading': '[ Bảy loại thẻ ]',
+      'features.subtitle': 'Kết hợp tự do · Sắp xếp linh hoạt · Kéo thả',
+      'features.note.title': 'Ghi chú Markdown',
+      'features.note.desc': 'Thẻ ghi chú tự do định dạng Markdown, có thể tạo lặp lại và phóng to thu nhỏ. Nơi lưu trữ ý tưởng phân mảnh.',
+      'features.note.tag': 'Có thể thu phóng',
+      'features.todo.title': 'Bảng ba cột',
+      'features.todo.desc': 'Bảng Kanban Cần làm / Đang làm / Hoàn thành, hỗ trợ kéo thả đổi trạng thái. Tiến độ công việc rõ ràng.',
+      'features.todo.tag': 'Kéo thả trạng thái',
+      'features.calendar.title': 'Lịch Canvas',
+      'features.calendar.desc': 'Chuyển đổi tháng / tuần, hỗ trợ sự kiện cả ngày và khung giờ. Kéo thả đổi lịch. Quản lý thời gian trên canvas.',
+      'features.calendar.tag': 'Kéo thả đổi lịch',
+      'features.media.title': 'Hình ảnh · Video · PDF',
+      'features.media.desc': 'Kéo thả PNG/JPG/GIF/WebP/MP4/MOV/PDF vào canvas để tạo thẻ media ngay. Hỗ trợ lưu trữ máy chủ local.',
+      'features.media.tag': 'Kéo thả tải lên',
+      'forms.heading': '[ Thêm thẻ ]',
+      'forms.subtitle': 'Bao quát mọi kịch bản công việc và cuộc sống',
+      'forms.hint.title': 'Thẻ Hint',
+      'forms.hint.desc': 'Hướng dẫn thao tác nhanh, hiển thị định dạng và thao tác được hỗ trợ',
+      'forms.glass.title': 'Liquid Glass',
+      'forms.glass.desc': 'Chủ đề Liquid Glass phong cách Apple, trải nghiệm hình ảnh xuất sắc',
+      'forms.db.title': 'IndexedDB',
+      'forms.db.desc': 'Lưu trữ persistent local trên trình duyệt, dữ liệu không upload',
+      'forms.lang.title': 'Song ngữ',
+      'forms.lang.desc': 'Chuyển đổi một click giữa Trung và Anh, UI thích ứng',
+      'deploy.heading': '[ Ba trong một ]',
+      'deploy.subtitle': 'Trình duyệt · Obsidian · API Cùng workspace',
+      'deploy.s1.num': '[01] Ứng dụng trình duyệt',
+      'deploy.s1.title': 'Ứng dụng Web độc lập',
+      'deploy.s1.desc': 'Một lệnh khởi động máy chủ local, mở trình duyệt và sử dụng. Canvas vô hạn 6000×4000, kéo thả và thu phóng tự do.',
+      'deploy.s2.num': '[02] Plugin Obsidian',
+      'deploy.s2.title': 'Tích hợp sâu quản lý kiến thức',
+      'deploy.s2.desc': 'Chạy như plugin Obsidian gốc, kết nối liền mạch với kho ghi chú. Quản lý việc cần làm và lịch hẹn bên cạnh đồ thị kiến thức.',
+      'deploy.s3.num': '[03] Dịch vụ API',
+      'deploy.s3.title': 'Thao tác canvas lập trình',
+      'deploy.s3.desc': 'API RESTful và CLI tích hợp sẵn. Hỗ trợ script và AI Agent tự động tạo thẻ, thêm ghi chú, truy vấn trạng thái.',
+      'scenes.heading': '[ Kịch bản sử dụng ]',
+      'scenes.subtitle': 'Thiết kế cho các vai trò khác nhau',
+      'scenes.role': 'Vai trò:',
+      'scenes.s1.title': 'Không gian làm việc hàng ngày',
+      'scenes.s1.desc': 'Mở canvas và xem việc cần làm, lịch hẹn và ý tưởng hôm nay. Một canvas kiểm soát cả ngày.',
+      'scenes.s1.role': 'Cá nhân',
+      'scenes.s2.title': 'Quản lý dự án',
+      'scenes.s2.desc': 'Tạo Grid cho mỗi dự án, tập hợp ghi chú, tài liệu và nhiệm vụ liên quan. Chuyển đổi canvas dễ dàng.',
+      'scenes.s2.role': 'Trưởng nhóm',
+      'scenes.s3.title': 'Thu thập ý tưởng',
+      'scenes.s3.desc': 'Ghi lại ý tưởng nhanh trong trình duyệt, sau đó sắp xếp sâu trong Obsidian. Kéo hình ảnh và PDF, mọi thứ trong tầm mắt.',
+      'scenes.s3.role': 'Người sáng tạo',
+      'scenes.s4.title': 'Tự động hóa AI',
+      'scenes.s4.desc': 'Để Agent tự động tạo việc cần làm và thêm ghi chú qua API. Giao diện tích hợp AI dự trữ, mở rộng không giới hạn.',
+      'scenes.s4.role': 'Lập trình viên',
+      'cta.title': 'Biến Canvas thành<br>Không gian làm việc của bạn.',
+      'cta.sub': 'Ưu tiên local, dữ liệu thuộc về bạn. Một lệnh khởi động, không cần đăng ký.',
+      'cta.email': 'Email tư vấn',
+      'cta.wechat': 'WeChat Work',
+      'cta.github': 'GitHub',
+      'footer.home': 'Trang chủ',
+      'footer.biz': 'Thương mại',
+      'footer.canvas': 'Bàn làm việc Canvas',
+      'footer.email': 'Thư'
+    }
+  };
+
+  let currentLang = 'zh';
+
+  function applyLanguage(lang) {
+    currentLang = lang;
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.dataset.i18n;
+      const text = translations[lang]?.[key];
+      if (text !== undefined) {
+        el.innerHTML = text;
+      }
+    });
+    document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.dataset.lang === lang));
+    localStorage.setItem('wstudio-lang', lang);
+  }
+
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const lang = btn.dataset.lang;
+      if (lang === currentLang) return;
+      applyLanguage(lang);
+    });
+  });
+
+  // Init language from localStorage or browser
+  const savedLang = localStorage.getItem('wstudio-lang');
+  if (savedLang && translations[savedLang]) {
+    applyLanguage(savedLang);
+  } else {
+    applyLanguage('zh');
+  }
+</script>
+
+</body>
+</html>

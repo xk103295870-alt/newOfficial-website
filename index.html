@@ -19,6 +19,7 @@
 <meta name="twitter:description" content="4-8 周从 AI 策略到生产部署。">
 
 <title>W工作室 · 为企业交付可落地的 AI 产品</title>
+<link rel="icon" type="image/svg+xml" href="./logo.svg">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1135,6 +1136,7 @@
         <div class="nav-dropdown-menu">
           <a href="#product" data-i18n="nav.aiProducts">AI 产品</a>
           <a href="smart-business-district.html" data-i18n="nav.bizMember">商业会员系统</a>
+          <a href="open-canvas.html" data-i18n="nav.canvas">Canvas Workbench</a>
         </div>
       </div>
       <a href="#how" data-i18n="nav.how">流程</a>
@@ -1228,6 +1230,21 @@
         <h3 data-i18n="product.ops.title">运营 Copilot</h3>
         <p data-i18n="product.ops.desc">运营分析、指标监控与决策助手。数据驱动的智能运营中枢。</p>
         <span class="tag" data-i18n="product.tag.dev">开发中</span>
+      </article>
+    </div>
+    <div class="section-head" style="margin-top:var(--sp-7); border-top:var(--hair) solid var(--c-border); padding-top:var(--sp-5);">
+      <h2 data-i18n="product.more.heading">[ 更多产品 ]</h2>
+      <span class="label-muted" data-i18n="product.more.subtitle">独立部署 · 开箱即用</span>
+    </div>
+    <div class="product-grid" style="grid-template-columns:1fr;">
+      <article class="product-card" style="border-right:0;">
+        <div class="card-label">05 / Canvas</div>
+        <h3 data-i18n="product.canvas.title">Canvas Workbench — 本地优先的画布工作区</h3>
+        <p data-i18n="product.canvas.desc">七种卡片自由排布，浏览器、Obsidian、API 三端一体。数据完全本地存储，无需注册，开箱即用。</p>
+        <div style="display:flex; gap:var(--sp-2); flex-wrap:wrap; align-items:center; margin-top:var(--sp-2);">
+          <span class="tag" data-i18n="product.tag.download">可下载</span>
+          <a href="open-canvas.html" style="font-size:12px; font-weight:500; color:var(--accent); text-decoration:none; margin-left:auto;" data-i18n="product.canvas.link">查看详情 →</a>
+        </div>
       </article>
     </div>
   </div>
@@ -1671,9 +1688,16 @@
       'nav.email': '邮件',
       'nav.aiProducts': 'AI 产品',
       'nav.bizMember': '商业会员系统',
+      'nav.canvas': '画布工作台',
       'brand': 'W工作室 [v1.0]',
       'product.heading': '[ 产品矩阵 ]',
       'product.subtitle': 'AI 产品栈 · 可复用模块',
+      'product.more.heading': '[ 更多产品 ]',
+      'product.more.subtitle': '独立部署 · 开箱即用',
+      'product.canvas.title': 'Canvas Workbench — 本地优先的画布工作区',
+      'product.canvas.desc': '七种卡片自由排布，浏览器、Obsidian、API 三端一体。数据完全本地存储，无需注册，开箱即用。',
+      'product.canvas.link': '查看详情 →',
+      'product.tag.download': '可下载',
       'product.agent.title': 'Agent 编排平台',
       'product.agent.desc': '多智能体协作、权限与审批内建。快速构建企业级 Agent 应用。',
       'product.knowledge.title': '知识与数据引擎',
@@ -1778,9 +1802,16 @@
       'nav.email': 'Email',
       'nav.aiProducts': 'AI Products',
       'nav.bizMember': 'Business Member System',
+      'nav.canvas': 'Bàn làm việc Canvas',
       'brand': 'W Studio [v1.0]',
       'product.heading': '[ Products ]',
       'product.subtitle': 'AI Product Stack · Reusable Modules',
+      'product.more.heading': '[ More Products ]',
+      'product.more.subtitle': 'Standalone · Ready to Use',
+      'product.canvas.title': 'Canvas Workbench — Local-First Canvas Workspace',
+      'product.canvas.desc': 'Seven card types, three deployment forms. Fully local storage, no registration required.',
+      'product.canvas.link': 'Learn More →',
+      'product.tag.download': 'Downloadable',
       'product.agent.title': 'Agent Orchestration',
       'product.agent.desc': 'Multi-agent collaboration with built-in permissions and approvals. Build enterprise-grade Agent apps fast.',
       'product.knowledge.title': 'Knowledge Engine',
@@ -1885,9 +1916,16 @@
       'nav.email': 'Thư',
       'nav.aiProducts': 'AI Sản phẩm',
       'nav.bizMember': 'Hệ thống thành viên',
+      'nav.canvas': 'Canvas Workbench',
       'brand': 'W Studio [v1.0]',
       'product.heading': '[ Sản phẩm ]',
       'product.subtitle': 'AI Stack · Module tái sử dụng',
+      'product.more.heading': '[ Sản phẩm khác ]',
+      'product.more.subtitle': 'Triển khai độc lập · Sẵn sàng sử dụng',
+      'product.canvas.title': 'Canvas Workbench — Không gian làm việc canvas ưu tiên local',
+      'product.canvas.desc': 'Bảy loại thẻ tự do, ba dạng triển khai. Dữ liệu lưu trữ hoàn toàn local, không cần đăng ký.',
+      'product.canvas.link': 'Xem chi tiết →',
+      'product.tag.download': 'Có thể tải',
       'product.agent.title': 'Nền tảng Agent',
       'product.agent.desc': 'Hợp tác đa tác nhân, quyền hạn và phê duyệt tích hợp. Xây dựng ứng dụng Agent cấp doanh nghiệp nhanh chóng.',
       'product.knowledge.title': 'Công cụ tri thức',
@@ -1977,46 +2015,55 @@
 
   let currentLang = 'zh';
 
-  document.querySelectorAll('.lang-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const lang = btn.dataset.lang;
-      if (lang === currentLang) return;
-      currentLang = lang;
-      document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
+  function applyLanguage(lang) {
+    currentLang = lang;
+    document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.dataset.lang === lang));
 
-      // Update all translatable elements
-      document.querySelectorAll('[data-i18n]').forEach(el => {
-        const key = el.dataset.i18n;
-        const text = translations[lang]?.[key];
-        if (text !== undefined) {
-          el.innerHTML = text;
-        }
-      });
-
-      // Update placeholders
-      document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
-        const key = el.dataset.i18nPlaceholder;
-        const text = translations[lang]?.[key];
-        if (text !== undefined) {
-          el.placeholder = text;
-        }
-      });
-
-      // Re-trigger typewriter for hero title
-      const ht = $('.hero-title');
-      if (ht) runTypewriter(ht, 55, 150);
-
-      // Re-trigger count-up animations for stats
-      $$('.stat').forEach(stat => {
-        stat.classList.remove('visible');
-      });
-      // Force re-observe
-      setTimeout(() => {
-        $$('.stat').forEach(stat => countUpObserver.observe(stat));
-      }, 100);
+    // Update all translatable elements
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.dataset.i18n;
+      const text = translations[lang]?.[key];
+      if (text !== undefined) {
+        el.innerHTML = text;
+      }
     });
+
+    // Update placeholders
+    document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+      const key = el.dataset.i18nPlaceholder;
+      const text = translations[lang]?.[key];
+      if (text !== undefined) {
+        el.placeholder = text;
+      }
+    });
+
+    // Re-trigger typewriter for hero title
+    const ht = $('.hero-title');
+    if (ht) runTypewriter(ht, 55, 150);
+
+    // Re-trigger count-up animations for stats
+    $$('.stat').forEach(stat => {
+      stat.classList.remove('visible');
+    });
+    // Force re-observe
+    setTimeout(() => {
+      $$('.stat').forEach(stat => countUpObserver.observe(stat));
+    }, 100);
+
+    localStorage.setItem('wstudio-lang', lang);
+  }
+
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.addEventListener('click', () => applyLanguage(btn.dataset.lang));
   });
+
+  // Init language on load
+  const savedLang = localStorage.getItem('wstudio-lang');
+  if (savedLang && translations[savedLang]) {
+    applyLanguage(savedLang);
+  } else {
+    applyLanguage('zh');
+  }
 
   // Prevent empty hash clicks from scrolling to top
   $$('a[href="#"]').forEach(a => {
