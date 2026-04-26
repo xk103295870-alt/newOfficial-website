@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Canvas Workbench 文档 — 本地优先的 Obsidian 画布工作台使用指南与安装说明。">
+<meta name="theme-color" content="#050505">
+<title>文档 · Canvas Workbench | W工作室</title>
+<link rel="icon" type="image/svg+xml" href="./logo.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-dark:   #050505;
+    --text-dark: #F5F5F5;
+    --muted:     #757575;
+    --border:    #F5F5F5;
+    --accent:    #00FF66;
+    --alert:     #FF3B00;
+    --hair: 1px;
+    --sp-1: 8px; --sp-2: 16px; --sp-3: 24px; --sp-4: 32px; --sp-5: 48px; --sp-6: 64px; --sp-7: 96px; --sp-8: 128px;
+    --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  [data-theme="dark"] {
+    --c-bg: #050505; --c-text: #F5F5F5; --c-border: #F5F5F5; --c-muted: #757575; --c-accent: #00FF66;
+  }
+  [data-theme="light"] {
+    --c-bg: #FFFFFF; --c-text: #000000; --c-border: #000000; --c-muted: #757575; --c-accent: #00FF66;
+  }
+  * { box-sizing: border-box; }
+  *::selection { background: var(--accent); color: #000; }
+  html, body { margin:0; padding:0; background: var(--c-bg); color: var(--c-text); font-family: var(--font-mono); font-size:14px; line-height:1.55; font-weight:400; -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
+  a { color:inherit; text-decoration:none; }
+  .container { max-width:800px; margin:0 auto; padding:0 var(--sp-4); }
+
+  /* ── NAV ── */
+  .lp-nav { border-bottom: var(--hair) solid var(--c-border); background: var(--c-bg); position:sticky; top:0; z-index:50; transition: backdrop-filter 200ms, background 200ms; }
+  .lp-nav.scrolled { backdrop-filter: blur(12px); background: rgba(5,5,5,0.85); }
+  [data-theme="light"] .lp-nav.scrolled { background: rgba(255,255,255,0.85); }
+  .lp-nav .container { display:flex; align-items:center; justify-content:space-between; height:64px; max-width:1200px; }
+  .lp-nav-left { display:flex; align-items:baseline; gap:var(--sp-2); }
+  .lp-wordmark { font-size:18px; font-weight:700; letter-spacing:-0.01em; }
+  .lp-version { font-size:11px; color:var(--c-muted); font-weight:500; }
+  .lp-nav-right { display:flex; align-items:center; gap:var(--sp-4); }
+  .lp-nav-right a { font-size:12px; font-weight:500; letter-spacing:0.02em; position:relative; padding:4px 0; }
+  .lp-nav-right a::after { content:''; position:absolute; bottom:-2px; left:0; width:0; height:1px; background:var(--accent); transition:width 0.3s ease; }
+  .lp-nav-right a:hover::after { width:100%; }
+
+  /* ── HERO ── */
+  .lp-hero { position:relative; border-bottom:var(--hair) solid var(--c-border); padding: var(--sp-7) 0 var(--sp-6); overflow:hidden; }
+  .grid-bg { position:absolute; inset:0; pointer-events:none; background-image: linear-gradient(to right, rgba(255,255,255,0.04) var(--hair), transparent var(--hair)), linear-gradient(to bottom, rgba(255,255,255,0.04) var(--hair), transparent var(--hair)); background-size:48px 48px; z-index:0; }
+  [data-theme="light"] .grid-bg { background-image: linear-gradient(to right, rgba(0,0,0,0.06) var(--hair), transparent var(--hair)), linear-gradient(to bottom, rgba(0,0,0,0.06) var(--hair), transparent var(--hair)); }
+  .lp-hero .container { position:relative; z-index:2; }
+  .hero-eyebrow { display:inline-flex; align-items:center; gap:var(--sp-2); padding:6px var(--sp-2); border:var(--hair) solid var(--c-border); margin-bottom:var(--sp-4); }
+  .hero-eyebrow .dot { width:8px; height:8px; background:var(--accent); display:inline-block; }
+  .hero-eyebrow span { font-size:11px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; }
+  .hero-title { font-weight:700; font-size: clamp(32px, 5vw, 64px); line-height:1.05; letter-spacing:-0.03em; margin:0 0 var(--sp-4) 0; }
+  .hero-sub { font-size:16px; line-height:1.6; color:var(--c-text); max-width:60ch; margin:0; }
+  .hero-sub .muted { color:var(--c-muted); }
+
+  /* ── CONTENT ── */
+  .lp-content { border-bottom:var(--hair) solid var(--c-border); padding: var(--sp-6) 0 var(--sp-8); }
+  .lp-content h2 { font-size:20px; font-weight:700; letter-spacing:-0.01em; margin: var(--sp-6) 0 var(--sp-3) 0; padding-bottom:var(--sp-2); border-bottom:var(--hair) solid var(--c-border); }
+  .lp-content h2:first-child { margin-top:0; }
+  .lp-content h3 { font-size:14px; font-weight:700; letter-spacing:0.02em; text-transform:uppercase; margin: var(--sp-5) 0 var(--sp-2) 0; color:var(--c-accent); }
+  .lp-content p { font-size:14px; line-height:1.7; color:var(--c-text); margin:0 0 var(--sp-3) 0; max-width:70ch; }
+  .lp-content p .muted { color:var(--c-muted); }
+  .lp-content ul, .lp-content ol { margin:0 0 var(--sp-3) 0; padding:0 0 0 20px; }
+  .lp-content li { font-size:14px; line-height:1.7; color:var(--c-text); padding: 3px 0; }
+  .lp-content li::marker { color: var(--accent); }
+  .lp-content a { color:var(--accent); border-bottom:var(--hair) solid var(--accent); transition:opacity 0.2s; }
+  .lp-content a:hover { opacity:0.7; }
+  .lp-content code { font-family:var(--font-mono); font-size:13px; background:rgba(0,255,102,0.08); padding:2px 6px; color:var(--accent); }
+  .lp-content pre { background:var(--c-bg); border:var(--hair) solid var(--c-border); padding:var(--sp-3); overflow-x:auto; margin:0 0 var(--sp-3) 0; }
+  .lp-content pre code { background:transparent; padding:0; color:var(--c-text); }
+  .lp-content blockquote { margin:0 0 var(--sp-3) 0; padding: var(--sp-2) var(--sp-3); border-left:var(--hair) solid var(--accent); background:rgba(0,255,102,0.03); }
+  .lp-content blockquote p { margin:0; color:var(--c-muted); }
+  .lp-content hr { border:0; border-top:var(--hair) solid var(--c-border); margin:var(--sp-5) 0; }
+
+  .download-box { border:var(--hair) solid var(--c-border); padding:var(--sp-4); margin: var(--sp-3) 0; }
+  .download-box a { display:inline-flex; align-items:center; gap:var(--sp-2); padding:8px 16px; background:var(--accent); color:#000; font-size:12px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; border:0; transition:opacity 0.2s; }
+  .download-box a:hover { opacity:0.85; }
+
+  .file-tree { border:var(--hair) solid var(--c-border); padding:var(--sp-3); margin: var(--sp-3) 0; font-size:13px; line-height:1.7; color:var(--c-muted); }
+  .file-tree .dir { color:var(--c-text); font-weight:500; }
+
+  /* ── FOOTER ── */
+  .lp-footer { padding: var(--sp-6) 0 var(--sp-5); }
+  .lp-footer .container { display:grid; gap:var(--sp-5); max-width:1200px; }
+  .lp-footer .row { display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap; gap:var(--sp-3); }
+  .lp-footer .brand { font-size:16px; font-weight:700; }
+  .lp-footer nav { display:flex; gap:var(--sp-4); }
+  .lp-footer nav a { font-size:12px; font-weight:500; }
+  .lp-footer .prompt-line { font-size:12px; color:var(--c-muted); }
+  .lp-footer .prompt-line .pf { color:var(--accent); }
+
+  /* ── THEME TOGGLE ── */
+  .theme-bar { position:fixed; bottom:24px; left:50%; transform:translateX(-50%); display:flex; gap:0; background:var(--c-bg); border:var(--hair) solid var(--c-border); z-index:1000; }
+  .theme-bar button { padding:8px 16px; border:0; background:transparent; color:var(--c-muted); font-family:var(--font-mono); font-size:11px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; cursor:pointer; }
+  .theme-bar button + button { border-left:var(--hair) solid var(--c-border); }
+  .theme-bar button.active { background:var(--accent); color:#000; }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeInUp { from { opacity:0; transform:translateY(30px); } to { opacity:1; transform:translateY(0); } }
+  .reveal { opacity:0; transform:translateY(30px); transition: opacity 0.6s var(--ease-out), transform 0.6s var(--ease-out); }
+  .reveal.visible { opacity:1; transform:translateY(0); }
+
+  /* ── MOBILE ── */
+  @media (max-width: 880px) {
+    .lp-footer .row { flex-direction:column; align-items:flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav class="lp-nav" id="navbar">
+  <div class="container">
+    <div class="lp-nav-left">
+      <a href="index.html" class="lp-wordmark">W工作室</a>
+      <span class="lp-version">[1.0.0]</span>
+    </div>
+    <div class="lp-nav-right">
+      <a href="open-canvas.html">产品</a>
+      <a href="open-canvas.html#features">功能</a>
+      <a href="open-canvas.html#deploy">部署</a>
+      <a href="open-canvas.html#scenes">场景</a>
+      <a href="open-canvas.html#cta">联系</a>
+      <a href="canvas-workbench-docs.html">文档</a>
+    </div>
+  </div>
+</nav>
+
+<main>
+
+<!-- ── HERO ── -->
+<section class="lp-hero">
+  <div class="grid-bg"></div>
+  <div class="container">
+    <div class="hero-eyebrow">
+      <span class="dot"></span>
+      <span>Canvas Workbench · Documentation</span>
+    </div>
+    <h1 class="hero-title">文档</h1>
+    <p class="hero-sub">
+      Canvas Workbench 是一个本地优先的 Obsidian 画布工作台，内置代办、日程管理、便利贴、日历卡片和媒体卡片等功能。
+    </p>
+  </div>
+</section>
+
+<!-- ── CONTENT ── -->
+<section class="lp-content reveal">
+  <div class="container">
+
+    <h2>下载 Obsidian 插件</h2>
+    <p>客户可以从 GitHub Releases 下载打包好的 Obsidian 插件：</p>
+    <div class="download-box">
+      <a href="https://github.com/xk103295870-alt/Canvas-Workbench/releases/latest" target="_blank">前往 GitHub Releases →</a>
+      <p style="margin-top:var(--sp-2); margin-bottom:0; font-size:13px; color:var(--c-muted);">插件压缩包：<code>open-canvas-obsidian-plugin.zip</code></p>
+    </div>
+    <p>也可以直接从本站下载：<a href="./plugins/open-canvas-obsidian-plugin.zip" download>下载 open-canvas-obsidian-plugin.zip</a></p>
+
+    <h2>在 Obsidian 中安装</h2>
+    <ol>
+      <li>从最新 Release 下载 <code>open-canvas-obsidian-plugin.zip</code>。</li>
+      <li>打开你的 Obsidian vault 文件夹。</li>
+      <li>如果没有插件目录，创建：<code>&lt;你的 Vault&gt;/.obsidian/plugins/open-canvas/</code></li>
+    </ol>
+    <p>把 zip 内容直接解压到这个目录里。最终结构应该是：</p>
+    <div class="file-tree">
+      <span class="dir">&lt;你的 Vault&gt;/.obsidian/plugins/open-canvas/</span><br>
+      &nbsp;&nbsp;manifest.json<br>
+      &nbsp;&nbsp;main.js<br>
+      &nbsp;&nbsp;styles.css<br>
+      &nbsp;&nbsp;ai-sticky-notes-logo.svg<br>
+      &nbsp;&nbsp;favicon.ico<br>
+      &nbsp;&nbsp;icon-192.png<br>
+      &nbsp;&nbsp;icon-256.png<br>
+      &nbsp;&nbsp;icon-512.png
+    </div>
+    <blockquote>
+      <p>注意：不是把 <code>dist-obsidian</code> 文件夹整个放进去，而是把里面的文件放到 <code>open-canvas/</code> 目录下。</p>
+    </blockquote>
+    <ol start="4">
+      <li>重启 Obsidian，或者关闭再开启第三方插件。</li>
+      <li>进入 <strong>设置 → 第三方插件</strong>，找到 <strong>Canvas Workbench</strong> 并启用。</li>
+      <li>通过左侧 W 图标或命令面板里的 <strong>Canvas Workbench</strong> 打开工作台。</li>
+    </ol>
+
+    <h2>主要功能</h2>
+    <ul>
+      <li>便利贴卡片</li>
+      <li>待办卡片，支持 To-do / Doing / Done 看板列</li>
+      <li>日历卡片，支持月视图和周视图</li>
+      <li>日程 / 事件管理</li>
+      <li>图片、视频、PDF 媒体卡片</li>
+      <li>卡片拖拽、缩放、编辑、最小化和删除确认</li>
+      <li>左侧边栏可收起 / 展开</li>
+      <li>默认本地持久化</li>
+      <li>默认免登录本地模式</li>
+      <li>Obsidian 原生插件构建</li>
+      <li>保留本地 API 和 API Key 接口，方便未来扩展 CLI / AI 联动</li>
+    </ul>
+
+    <h2>是否需要启动后端服务？</h2>
+    <p><strong>不需要。</strong></p>
+    <p>作为 Obsidian 插件使用时，Canvas Workbench 会直接在 Obsidian 内运行，不需要启动：</p>
+    <pre><code>npm run dev
+npm run api:dev
+open-canvas start</code></pre>
+    <p>这些命令只用于开发、浏览器版本、或者未来 CLI/API 联动场景。</p>
+
+    <h2>浏览器 / CLI 快速启动</h2>
+    <p>开发或浏览器版本使用：</p>
+    <pre><code>npm install
+open-canvas start</code></pre>
+    <p>如果你想手动分别启动前端和 API：</p>
+    <pre><code>npm run api:dev
+npm run dev</code></pre>
+
+    <h2>CLI 命令</h2>
+    <ul>
+      <li><code>open-canvas start</code> — 启动 Web + API</li>
+      <li><code>open-canvas start --no-open</code> — 启动但不自动打开浏览器</li>
+      <li><code>open-canvas status</code> — 查看运行状态</li>
+      <li><code>open-canvas update</code> — 在线更新</li>
+      <li><code>open-canvas stop</code> — 停止服务</li>
+    </ul>
+
+    <h2>开发命令</h2>
+    <pre><code>npm install
+npm run build
+npm run build:obsidian
+npm run lint
+npm run icons:generate</code></pre>
+
+    <h2>构建 Obsidian 插件</h2>
+    <pre><code>npm run build:obsidian
+cp manifest.json dist-obsidian/manifest.json</code></pre>
+    <p>产物在 <code>dist-obsidian/</code>。</p>
+
+    <h2>打包 Obsidian 插件 zip</h2>
+    <pre><code>npm run build:obsidian
+cp manifest.json dist-obsidian/manifest.json
+mkdir -p release
+cd dist-obsidian
+zip -r ../release/open-canvas-obsidian-plugin.zip .</code></pre>
+
+    <h2>更多文档</h2>
+    <ul>
+      <li><a href="https://github.com/xk103295870-alt/Canvas-Workbench/blob/main/README.md" target="_blank">English README</a></li>
+      <li><a href="https://github.com/xk103295870-alt/Canvas-Workbench/blob/main/API_REFERENCE.md" target="_blank">API 参考</a></li>
+    </ul>
+
+  </div>
+</section>
+
+</main>
+
+<!-- ── FOOTER ── -->
+<footer class="lp-footer">
+  <hr style="border:0; border-top:var(--hair) solid var(--c-border); margin:0;">
+  <div class="container">
+    <div class="row">
+      <div class="brand">W工作室 [v1.0]</div>
+      <nav>
+        <a href="index.html">首页</a>
+        <a href="open-canvas.html">Canvas Workbench</a>
+        <a href="canvas-workbench-docs.html">文档</a>
+        <a href="mailto:xk103295870@gmail.com">邮件</a>
+      </nav>
+    </div>
+    <div class="row">
+      <span class="prompt-line"><span class="pf">$</span> xk103295870@gmail.com</span>
+      <span class="prompt-line">© 2026 微诺技术工作室 · weinuo.work</span>
+    </div>
+  </div>
+</footer>
+
+<!-- Theme toggle -->
+<div class="theme-bar">
+  <button class="active" data-theme-btn="dark">Dark</button>
+  <button data-theme-btn="light">Light</button>
+</div>
+
+<script>
+  // Nav scroll
+  const navbar = document.getElementById('navbar');
+  const onScroll = () => { navbar.classList.toggle('scrolled', window.scrollY > 10); };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  // Scroll reveal
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('visible'); revealObserver.unobserve(entry.target); } });
+  }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+  // Theme toggle
+  document.querySelectorAll('.theme-bar button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const theme = btn.dataset.themeBtn;
+      document.documentElement.setAttribute('data-theme', theme);
+      document.querySelectorAll('.theme-bar button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      localStorage.setItem('wstudio-theme', theme);
+    });
+  });
+  const savedTheme = localStorage.getItem('wstudio-theme');
+  if (savedTheme) {
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    document.querySelectorAll('.theme-bar button').forEach(b => { b.classList.toggle('active', b.dataset.themeBtn === savedTheme); });
+  }
+</script>
+
+</body>
+</html>
