@@ -170,8 +170,8 @@
       <span class="dot"></span>
       <span>Canvas Workbench · Documentation</span>
     </div>
-    <h1 class="hero-title">文档</h1>
-    <p class="hero-sub">
+    <h1 class="hero-title" data-i18n="docs.hero.title">文档</h1>
+    <p class="hero-sub" data-i18n="docs.hero.sub">
       Canvas Workbench 是一个本地优先的 Obsidian 画布工作台，内置代办、日程管理、便利贴、日历卡片和媒体卡片等功能。
     </p>
   </div>
@@ -181,23 +181,23 @@
 <section class="lp-content">
   <div class="container">
 
-    <h2>下载 Obsidian 插件</h2>
-    <p>客户可以从 GitHub Releases 下载打包好的 Obsidian 插件：</p>
+    <h2 data-i18n="docs.download.title">下载 Obsidian 插件</h2>
+    <p data-i18n="docs.download.desc">客户可以从 GitHub Releases 下载打包好的 Obsidian 插件：</p>
     <div class="download-box">
-      <a href="https://github.com/xk103295870-alt/Canvas-Workbench/releases/latest" target="_blank">前往 GitHub Releases →</a>
-      <p style="margin-top:var(--sp-2); margin-bottom:0; font-size:13px; color:var(--c-muted);">插件压缩包：<code>open-canvas-obsidian-plugin.zip</code></p>
+      <a href="https://github.com/xk103295870-alt/Canvas-Workbench/releases/latest" target="_blank" data-i18n="docs.download.btn">前往 GitHub Releases →</a>
+      <p style="margin-top:var(--sp-2); margin-bottom:0; font-size:13px; color:var(--c-muted);"><span data-i18n="docs.download.package">插件压缩包：</span><code>open-canvas-obsidian-plugin.zip</code></p>
     </div>
-    <p>也可以直接从本站下载：<a href="./plugins/open-canvas-obsidian-plugin.zip" download>下载 open-canvas-obsidian-plugin.zip</a></p>
+    <p><span data-i18n="docs.download.local">也可以直接从本站下载：</span><a href="./plugins/open-canvas-obsidian-plugin.zip" download data-i18n="docs.download.link">下载 open-canvas-obsidian-plugin.zip</a></p>
 
-    <h2>在 Obsidian 中安装</h2>
+    <h2 data-i18n="docs.install.title">在 Obsidian 中安装</h2>
     <ol>
-      <li>从最新 Release 下载 <code>open-canvas-obsidian-plugin.zip</code>。</li>
-      <li>打开你的 Obsidian vault 文件夹。</li>
-      <li>如果没有插件目录，创建：<code>&lt;你的 Vault&gt;/.obsidian/plugins/open-canvas/</code></li>
+      <li data-i18n="docs.install.s1">从最新 Release 下载 <code>open-canvas-obsidian-plugin.zip</code>。</li>
+      <li data-i18n="docs.install.s2">打开你的 Obsidian vault 文件夹。</li>
+      <li data-i18n="docs.install.s3">如果没有插件目录，创建：<code>&lt;你的 Vault&gt;/.obsidian/plugins/open-canvas/</code></li>
     </ol>
-    <p>把 zip 内容直接解压到这个目录里。最终结构应该是：</p>
+    <p data-i18n="docs.install.extract">把 zip 内容直接解压到这个目录里。最终结构应该是：</p>
     <div class="file-tree">
-      <span class="dir">&lt;你的 Vault&gt;/.obsidian/plugins/open-canvas/</span><br>
+      <span class="dir" data-i18n="docs.install.dir">&lt;你的 Vault&gt;/.obsidian/plugins/open-canvas/</span><br>
       &nbsp;&nbsp;manifest.json<br>
       &nbsp;&nbsp;main.js<br>
       &nbsp;&nbsp;styles.css<br>
@@ -208,77 +208,77 @@
       &nbsp;&nbsp;icon-512.png
     </div>
     <blockquote>
-      <p>注意：不是把 <code>dist-obsidian</code> 文件夹整个放进去，而是把里面的文件放到 <code>open-canvas/</code> 目录下。</p>
+      <p data-i18n="docs.install.note">注意：不是把 <code>dist-obsidian</code> 文件夹整个放进去，而是把里面的文件放到 <code>open-canvas/</code> 目录下。</p>
     </blockquote>
     <ol start="4">
-      <li>重启 Obsidian，或者关闭再开启第三方插件。</li>
-      <li>进入 <strong>设置 → 第三方插件</strong>，找到 <strong>Canvas Workbench</strong> 并启用。</li>
-      <li>通过左侧 W 图标或命令面板里的 <strong>Canvas Workbench</strong> 打开工作台。</li>
+      <li data-i18n="docs.install.s4">重启 Obsidian，或者关闭再开启第三方插件。</li>
+      <li data-i18n="docs.install.s5">进入 <strong>设置 → 第三方插件</strong>，找到 <strong>Canvas Workbench</strong> 并启用。</li>
+      <li data-i18n="docs.install.s6">通过左侧 W 图标或命令面板里的 <strong>Canvas Workbench</strong> 打开工作台。</li>
     </ol>
 
-    <h2>主要功能</h2>
+    <h2 data-i18n="docs.features.title">主要功能</h2>
     <ul>
-      <li>便利贴卡片</li>
-      <li>待办卡片，支持 To-do / Doing / Done 看板列</li>
-      <li>日历卡片，支持月视图和周视图</li>
-      <li>日程 / 事件管理</li>
-      <li>图片、视频、PDF 媒体卡片</li>
-      <li>卡片拖拽、缩放、编辑、最小化和删除确认</li>
-      <li>左侧边栏可收起 / 展开</li>
-      <li>默认本地持久化</li>
-      <li>默认免登录本地模式</li>
-      <li>Obsidian 原生插件构建</li>
-      <li>保留本地 API 和 API Key 接口，方便未来扩展 CLI / AI 联动</li>
+      <li data-i18n="docs.features.f1">便利贴卡片</li>
+      <li data-i18n="docs.features.f2">待办卡片，支持 To-do / Doing / Done 看板列</li>
+      <li data-i18n="docs.features.f3">日历卡片，支持月视图和周视图</li>
+      <li data-i18n="docs.features.f4">日程 / 事件管理</li>
+      <li data-i18n="docs.features.f5">图片、视频、PDF 媒体卡片</li>
+      <li data-i18n="docs.features.f6">卡片拖拽、缩放、编辑、最小化和删除确认</li>
+      <li data-i18n="docs.features.f7">左侧边栏可收起 / 展开</li>
+      <li data-i18n="docs.features.f8">默认本地持久化</li>
+      <li data-i18n="docs.features.f9">默认免登录本地模式</li>
+      <li data-i18n="docs.features.f10">Obsidian 原生插件构建</li>
+      <li data-i18n="docs.features.f11">保留本地 API 和 API Key 接口，方便未来扩展 CLI / AI 联动</li>
     </ul>
 
-    <h2>是否需要启动后端服务？</h2>
-    <p><strong>不需要。</strong></p>
-    <p>作为 Obsidian 插件使用时，Canvas Workbench 会直接在 Obsidian 内运行，不需要启动：</p>
+    <h2 data-i18n="docs.backend.title">是否需要启动后端服务？</h2>
+    <p><strong data-i18n="docs.backend.no">不需要。</strong></p>
+    <p data-i18n="docs.backend.desc">作为 Obsidian 插件使用时，Canvas Workbench 会直接在 Obsidian 内运行，不需要启动：</p>
     <pre><code>npm run dev
 npm run api:dev
 open-canvas start</code></pre>
-    <p>这些命令只用于开发、浏览器版本、或者未来 CLI/API 联动场景。</p>
+    <p data-i18n="docs.backend.note">这些命令只用于开发、浏览器版本、或者未来 CLI/API 联动场景。</p>
 
-    <h2>浏览器 / CLI 快速启动</h2>
-    <p>开发或浏览器版本使用：</p>
+    <h2 data-i18n="docs.cli.title">浏览器 / CLI 快速启动</h2>
+    <p data-i18n="docs.cli.desc1">开发或浏览器版本使用：</p>
     <pre><code>npm install
 open-canvas start</code></pre>
-    <p>如果你想手动分别启动前端和 API：</p>
+    <p data-i18n="docs.cli.desc2">如果你想手动分别启动前端和 API：</p>
     <pre><code>npm run api:dev
 npm run dev</code></pre>
 
-    <h2>CLI 命令</h2>
+    <h2 data-i18n="docs.commands.title">CLI 命令</h2>
     <ul>
-      <li><code>open-canvas start</code> — 启动 Web + API</li>
-      <li><code>open-canvas start --no-open</code> — 启动但不自动打开浏览器</li>
-      <li><code>open-canvas status</code> — 查看运行状态</li>
-      <li><code>open-canvas update</code> — 在线更新</li>
-      <li><code>open-canvas stop</code> — 停止服务</li>
+      <li><code>open-canvas start</code> — <span data-i18n="docs.commands.c1">启动 Web + API</span></li>
+      <li><code>open-canvas start --no-open</code> — <span data-i18n="docs.commands.c2">启动但不自动打开浏览器</span></li>
+      <li><code>open-canvas status</code> — <span data-i18n="docs.commands.c3">查看运行状态</span></li>
+      <li><code>open-canvas update</code> — <span data-i18n="docs.commands.c4">在线更新</span></li>
+      <li><code>open-canvas stop</code> — <span data-i18n="docs.commands.c5">停止服务</span></li>
     </ul>
 
-    <h2>开发命令</h2>
+    <h2 data-i18n="docs.dev.title">开发命令</h2>
     <pre><code>npm install
 npm run build
 npm run build:obsidian
 npm run lint
 npm run icons:generate</code></pre>
 
-    <h2>构建 Obsidian 插件</h2>
+    <h2 data-i18n="docs.build.title">构建 Obsidian 插件</h2>
     <pre><code>npm run build:obsidian
 cp manifest.json dist-obsidian/manifest.json</code></pre>
-    <p>产物在 <code>dist-obsidian/</code>。</p>
+    <p data-i18n="docs.build.output">产物在 <code>dist-obsidian/</code>。</p>
 
-    <h2>打包 Obsidian 插件 zip</h2>
+    <h2 data-i18n="docs.package.title">打包 Obsidian 插件 zip</h2>
     <pre><code>npm run build:obsidian
 cp manifest.json dist-obsidian/manifest.json
 mkdir -p release
 cd dist-obsidian
 zip -r ../release/open-canvas-obsidian-plugin.zip .</code></pre>
 
-    <h2>更多文档</h2>
+    <h2 data-i18n="docs.more.title">更多文档</h2>
     <ul>
       <li><a href="https://github.com/xk103295870-alt/Canvas-Workbench/blob/main/README.md" target="_blank">English README</a></li>
-      <li><a href="https://github.com/xk103295870-alt/Canvas-Workbench/blob/main/API_REFERENCE.md" target="_blank">API 参考</a></li>
+      <li><a href="https://github.com/xk103295870-alt/Canvas-Workbench/blob/main/API_REFERENCE.md" target="_blank" data-i18n="docs.more.api">API 参考</a></li>
     </ul>
 
   </div>
@@ -293,10 +293,10 @@ zip -r ../release/open-canvas-obsidian-plugin.zip .</code></pre>
     <div class="row">
       <div class="brand">W工作室 [v1.0]</div>
       <nav>
-        <a href="index.html">首页</a>
+        <a href="index.html" data-i18n="footer.home">首页</a>
         <a href="open-canvas.html">Canvas Workbench</a>
-        <a href="canvas-workbench-docs.html">文档</a>
-        <a href="mailto:xk103295870@gmail.com">邮件</a>
+        <a href="canvas-workbench-docs.html" data-i18n="nav.docs">文档</a>
+        <a href="mailto:xk103295870@gmail.com" data-i18n="footer.email">邮件</a>
       </nav>
     </div>
     <div class="row">
@@ -349,7 +349,58 @@ zip -r ../release/open-canvas-obsidian-plugin.zip .</code></pre>
       'nav.deploy': '部署',
       'nav.scenes': '场景',
       'nav.contact': '联系',
-      'nav.docs': '文档'
+      'nav.docs': '文档',
+      'docs.hero.title': '文档',
+      'docs.hero.sub': 'Canvas Workbench 是一个本地优先的 Obsidian 画布工作台，内置代办、日程管理、便利贴、日历卡片和媒体卡片等功能。',
+      'docs.download.title': '下载 Obsidian 插件',
+      'docs.download.desc': '客户可以从 GitHub Releases 下载打包好的 Obsidian 插件：',
+      'docs.download.btn': '前往 GitHub Releases →',
+      'docs.download.package': '插件压缩包：',
+      'docs.download.local': '也可以直接从本站下载：',
+      'docs.download.link': '下载 open-canvas-obsidian-plugin.zip',
+      'docs.install.title': '在 Obsidian 中安装',
+      'docs.install.s1': '从最新 Release 下载 <code>open-canvas-obsidian-plugin.zip</code>。',
+      'docs.install.s2': '打开你的 Obsidian vault 文件夹。',
+      'docs.install.s3': '如果没有插件目录，创建：<code>&lt;你的 Vault&gt;/.obsidian/plugins/open-canvas/</code>',
+      'docs.install.extract': '把 zip 内容直接解压到这个目录里。最终结构应该是：',
+      'docs.install.dir': '&lt;你的 Vault&gt;/.obsidian/plugins/open-canvas/',
+      'docs.install.note': '注意：不是把 <code>dist-obsidian</code> 文件夹整个放进去，而是把里面的文件放到 <code>open-canvas/</code> 目录下。',
+      'docs.install.s4': '重启 Obsidian，或者关闭再开启第三方插件。',
+      'docs.install.s5': '进入 <strong>设置 → 第三方插件</strong>，找到 <strong>Canvas Workbench</strong> 并启用。',
+      'docs.install.s6': '通过左侧 W 图标或命令面板里的 <strong>Canvas Workbench</strong> 打开工作台。',
+      'docs.features.title': '主要功能',
+      'docs.features.f1': '便利贴卡片',
+      'docs.features.f2': '待办卡片，支持 To-do / Doing / Done 看板列',
+      'docs.features.f3': '日历卡片，支持月视图和周视图',
+      'docs.features.f4': '日程 / 事件管理',
+      'docs.features.f5': '图片、视频、PDF 媒体卡片',
+      'docs.features.f6': '卡片拖拽、缩放、编辑、最小化和删除确认',
+      'docs.features.f7': '左侧边栏可收起 / 展开',
+      'docs.features.f8': '默认本地持久化',
+      'docs.features.f9': '默认免登录本地模式',
+      'docs.features.f10': 'Obsidian 原生插件构建',
+      'docs.features.f11': '保留本地 API 和 API Key 接口，方便未来扩展 CLI / AI 联动',
+      'docs.backend.title': '是否需要启动后端服务？',
+      'docs.backend.no': '不需要。',
+      'docs.backend.desc': '作为 Obsidian 插件使用时，Canvas Workbench 会直接在 Obsidian 内运行，不需要启动：',
+      'docs.backend.note': '这些命令只用于开发、浏览器版本、或者未来 CLI/API 联动场景。',
+      'docs.cli.title': '浏览器 / CLI 快速启动',
+      'docs.cli.desc1': '开发或浏览器版本使用：',
+      'docs.cli.desc2': '如果你想手动分别启动前端和 API：',
+      'docs.commands.title': 'CLI 命令',
+      'docs.commands.c1': '启动 Web + API',
+      'docs.commands.c2': '启动但不自动打开浏览器',
+      'docs.commands.c3': '查看运行状态',
+      'docs.commands.c4': '在线更新',
+      'docs.commands.c5': '停止服务',
+      'docs.dev.title': '开发命令',
+      'docs.build.title': '构建 Obsidian 插件',
+      'docs.build.output': '产物在 <code>dist-obsidian/</code>。',
+      'docs.package.title': '打包 Obsidian 插件 zip',
+      'docs.more.title': '更多文档',
+      'docs.more.api': 'API 参考',
+      'footer.home': '首页',
+      'footer.email': '邮件'
     },
     en: {
       'nav.product': 'Product',
@@ -357,7 +408,58 @@ zip -r ../release/open-canvas-obsidian-plugin.zip .</code></pre>
       'nav.deploy': 'Deploy',
       'nav.scenes': 'Scenes',
       'nav.contact': 'Contact',
-      'nav.docs': 'Docs'
+      'nav.docs': 'Docs',
+      'docs.hero.title': 'Documentation',
+      'docs.hero.sub': 'Canvas Workbench is a local-first Obsidian canvas workbench with built-in to-do, schedule management, sticky notes, calendar cards, and media cards.',
+      'docs.download.title': 'Download Obsidian Plugin',
+      'docs.download.desc': 'You can download the packaged Obsidian plugin from GitHub Releases:',
+      'docs.download.btn': 'Go to GitHub Releases →',
+      'docs.download.package': 'Plugin package:',
+      'docs.download.local': 'Or download directly from this site:',
+      'docs.download.link': 'Download open-canvas-obsidian-plugin.zip',
+      'docs.install.title': 'Install in Obsidian',
+      'docs.install.s1': 'Download <code>open-canvas-obsidian-plugin.zip</code> from the latest Release.',
+      'docs.install.s2': 'Open your Obsidian vault folder.',
+      'docs.install.s3': 'If the plugin directory does not exist, create: <code>&lt;Your Vault&gt;/.obsidian/plugins/open-canvas/</code>',
+      'docs.install.extract': 'Extract the zip contents directly into this directory. The final structure should be:',
+      'docs.install.dir': '&lt;Your Vault&gt;/.obsidian/plugins/open-canvas/',
+      'docs.install.note': 'Note: Do not put the entire <code>dist-obsidian</code> folder inside; instead, place the files into the <code>open-canvas/</code> directory.',
+      'docs.install.s4': 'Restart Obsidian, or toggle third-party plugins off and on.',
+      'docs.install.s5': 'Go to <strong>Settings → Third-party plugins</strong>, find <strong>Canvas Workbench</strong> and enable it.',
+      'docs.install.s6': 'Open the workbench via the W icon on the left or the <strong>Canvas Workbench</strong> command in the command palette.',
+      'docs.features.title': 'Key Features',
+      'docs.features.f1': 'Sticky note cards',
+      'docs.features.f2': 'To-do cards with To-do / Doing / Done kanban columns',
+      'docs.features.f3': 'Calendar cards with monthly and weekly views',
+      'docs.features.f4': 'Schedule / Event management',
+      'docs.features.f5': 'Image, video, PDF media cards',
+      'docs.features.f6': 'Card drag, zoom, edit, minimize, and delete confirmation',
+      'docs.features.f7': 'Left sidebar collapsible / expandable',
+      'docs.features.f8': 'Local persistence by default',
+      'docs.features.f9': 'Local mode without login by default',
+      'docs.features.f10': 'Obsidian native plugin build',
+      'docs.features.f11': 'Retains local API and API Key interfaces for future CLI / AI integration',
+      'docs.backend.title': 'Do I need to start a backend service?',
+      'docs.backend.no': 'No.',
+      'docs.backend.desc': 'When used as an Obsidian plugin, Canvas Workbench runs directly inside Obsidian. You do not need to start:',
+      'docs.backend.note': 'These commands are only for development, browser versions, or future CLI/API integration scenarios.',
+      'docs.cli.title': 'Browser / CLI Quick Start',
+      'docs.cli.desc1': 'For development or browser version:',
+      'docs.cli.desc2': 'If you want to start frontend and API manually:',
+      'docs.commands.title': 'CLI Commands',
+      'docs.commands.c1': 'Start Web + API',
+      'docs.commands.c2': 'Start without auto-opening browser',
+      'docs.commands.c3': 'Check running status',
+      'docs.commands.c4': 'Online update',
+      'docs.commands.c5': 'Stop service',
+      'docs.dev.title': 'Development Commands',
+      'docs.build.title': 'Build Obsidian Plugin',
+      'docs.build.output': 'Output is in <code>dist-obsidian/</code>.',
+      'docs.package.title': 'Package Obsidian Plugin zip',
+      'docs.more.title': 'More Documentation',
+      'docs.more.api': 'API Reference',
+      'footer.home': 'Home',
+      'footer.email': 'Email'
     },
     vi: {
       'nav.product': 'Sản phẩm',
@@ -365,7 +467,58 @@ zip -r ../release/open-canvas-obsidian-plugin.zip .</code></pre>
       'nav.deploy': 'Triển khai',
       'nav.scenes': 'Kịch bản',
       'nav.contact': 'Liên hệ',
-      'nav.docs': 'Tài liệu'
+      'nav.docs': 'Tài liệu',
+      'docs.hero.title': 'Tài liệu',
+      'docs.hero.sub': 'Canvas Workbench là một bàn làm việc canvas Obsidian ưu tiên cục bộ, có sẵn to-do, quản lý lịch trình, ghi chú dán, thẻ lịch và thẻ media.',
+      'docs.download.title': 'Tải plugin Obsidian',
+      'docs.download.desc': 'Bạn có thể tải plugin Obsidian đã đóng gói từ GitHub Releases:',
+      'docs.download.btn': 'Đi đến GitHub Releases →',
+      'docs.download.package': 'Gói plugin:',
+      'docs.download.local': 'Hoặc tải trực tiếp từ trang web này:',
+      'docs.download.link': 'Tải open-canvas-obsidian-plugin.zip',
+      'docs.install.title': 'Cài đặt trong Obsidian',
+      'docs.install.s1': 'Tải <code>open-canvas-obsidian-plugin.zip</code> từ Release mới nhất.',
+      'docs.install.s2': 'Mở thư mục vault Obsidian của bạn.',
+      'docs.install.s3': 'Nếu thư mục plugin không tồn tại, hãy tạo: <code>&lt;Vault của bạn&gt;/.obsidian/plugins/open-canvas/</code>',
+      'docs.install.extract': 'Giải nén nội dung zip trực tiếp vào thư mục này. Cấu trúc cuối cùng nên là:',
+      'docs.install.dir': '&lt;Vault của bạn&gt;/.obsidian/plugins/open-canvas/',
+      'docs.install.note': 'Lưu ý: Không đặt toàn bộ thư mục <code>dist-obsidian</code> vào; thay vào đó, hãy đặt các tệp vào thư mục <code>open-canvas/</code>.',
+      'docs.install.s4': 'Khởi động lại Obsidian, hoặc tắt và bật lại plugin bên thứ ba.',
+      'docs.install.s5': 'Vào <strong>Cài đặt → Plugin bên thứ ba</strong>, tìm <strong>Canvas Workbench</strong> và bật nó lên.',
+      'docs.install.s6': 'Mở bàn làm việc qua biểu tượng W bên trái hoặc lệnh <strong>Canvas Workbench</strong> trong bảng lệnh.',
+      'docs.features.title': 'Các tính năng chính',
+      'docs.features.f1': 'Thẻ ghi chú dán',
+      'docs.features.f2': 'Thẻ việc cần làm, hỗ trợ cột kanban To-do / Doing / Done',
+      'docs.features.f3': 'Thẻ lịch, hỗ trợ chế độ xem tháng và tuần',
+      'docs.features.f4': 'Quản lý lịch trình / sự kiện',
+      'docs.features.f5': 'Thẻ media hình ảnh, video, PDF',
+      'docs.features.f6': 'Kéo thả, phóng to, chỉnh sửa, thu nhỏ và xác nhận xóa thẻ',
+      'docs.features.f7': 'Thanh bên trái có thể thu gọn / mở rộng',
+      'docs.features.f8': 'Lưu trữ cục bộ theo mặc định',
+      'docs.features.f9': 'Chế độ cục bộ không cần đăng nhập theo mặc định',
+      'docs.features.f10': 'Xây dựng plugin gốc Obsidian',
+      'docs.features.f11': 'Giữ giao diện API cục bộ và API Key, thuận tiện mở rộng CLI / AI trong tương lai',
+      'docs.backend.title': 'Có cần khởi động dịch vụ backend không?',
+      'docs.backend.no': 'Không.',
+      'docs.backend.desc': 'Khi sử dụng như một plugin Obsidian, Canvas Workbench chạy trực tiếp trong Obsidian. Bạn không cần khởi động:',
+      'docs.backend.note': 'Các lệnh này chỉ dùng cho phát triển, phiên bản trình duyệt, hoặc các tình huống tích hợp CLI/API trong tương lai.',
+      'docs.cli.title': 'Khởi động nhanh trình duyệt / CLI',
+      'docs.cli.desc1': 'Dùng cho phiên bản phát triển hoặc trình duyệt:',
+      'docs.cli.desc2': 'Nếu bạn muốn khởi động frontend và API riêng:',
+      'docs.commands.title': 'Lệnh CLI',
+      'docs.commands.c1': 'Khởi động Web + API',
+      'docs.commands.c2': 'Khởi động nhưng không tự động mở trình duyệt',
+      'docs.commands.c3': 'Xem trạng thái chạy',
+      'docs.commands.c4': 'Cập nhật trực tuyến',
+      'docs.commands.c5': 'Dừng dịch vụ',
+      'docs.dev.title': 'Lệnh phát triển',
+      'docs.build.title': 'Xây dựng plugin Obsidian',
+      'docs.build.output': 'Kết quả trong <code>dist-obsidian/</code>.',
+      'docs.package.title': 'Đóng gói plugin Obsidian zip',
+      'docs.more.title': 'Tài liệu khác',
+      'docs.more.api': 'API Reference',
+      'footer.home': 'Trang chủ',
+      'footer.email': 'Email'
     }
   };
   let currentLang = 'zh';
