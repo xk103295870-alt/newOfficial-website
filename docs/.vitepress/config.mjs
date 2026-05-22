@@ -59,7 +59,8 @@ export default defineConfig({
         text: 'Reference',
         items: [
           { text: '常见问题', link: '/faq' },
-          { text: '更新日志', link: '/changelog' }
+          { text: '更新日志', link: '/changelog' },
+          { text: '资料与附件', link: '/resources' }
         ]
       }
     ],
